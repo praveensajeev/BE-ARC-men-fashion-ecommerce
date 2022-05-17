@@ -1,0 +1,462 @@
+
+
+
+
+{{!--EDIT PROFILE MODAL --}}
+  <div
+    class="modal fade"
+    id="exampleModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <form action="/edit-profile" method="post" id="editProfileForm" enctype="multipart/form-data">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-secondary">
+          <h5 class="modal-title" id="exampleModalLabel">Edit Profile</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+
+            <div class="">
+              <label class="labels">First Name</label><input
+                type="text"
+                name="firstName"
+                class="form-control"
+                value="{{user.firstName}}"
+                placeholder="Last Name"
+              />
+            </div>
+            <div class="">
+              <label class="labels">Last Name</label><input
+                type="text"
+                name="lastName"
+                value="{{user.lastName}}"
+                class="form-control"
+                placeholder="Last Name"
+              />
+            </div>
+            <div class="">
+              <label class="labels">Mobile Number</label><input
+                type="text"
+                name="phone"
+                value="{{user.phone}}"
+                class="form-control"
+                placeholder="Phone"
+                id="phonenumber"
+              />
+            </div>
+
+            <div class="">
+              <label class="labels">Email</label><input
+                type="text"
+                name="email"
+                value="{{user.email}}"
+                id="email"
+                class="form-control"
+                placeholder="Phone"
+              />
+            </div>
+          
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+
+
+{{!-- CHANGE PASSWORD MODAL --}}
+    <div
+      class="modal fade"
+      id="exampleModal2"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <form action="/change-password" method="post" id="changePassForm">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-secondary">
+            <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+
+              <div class="">
+                <label class="labels">Current Password</label><input
+                  type="password"
+                  name="currPass"
+                  class="form-control"
+                />
+              </div>
+              <div class="">
+                <label class="labels">New Password</label><input
+                  type="password"
+                  name="newPass"
+                  class="form-control"
+                  id="newPassword"
+                />
+              </div>
+              <div class="">
+                <label class="labels">Type New Password Again</label><input
+                  type="password"
+                  name="retryNewPass"
+                  class="form-control"
+                  id="retryNewPass"
+                />
+              </div>
+            
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >Cancel</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+<!-- user profile -->
+
+<section>
+
+  <section class="vh-100" style="background-color: #f4f5f7;">
+  <div class="container py-5 ">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-md-12 mb-4 mb-lg-0">
+        <div class="card mb-3" style="border-radius: .5rem;">
+          <div class="row g-0">
+            <div class="col-md-4 gradient-custom text-center text-white  "
+              style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;height:40rem">
+              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
+              <h5>{{user.firstName}} {{user.lastName}}</h5>
+              <p>{{user.email}}</p>
+              
+        <span style="margin-left: 2rem;">
+            <a href="/edit-profile" class="text-primary" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo"><i class="far fa-edit mb-5 text-primary"></i></a>
+          </span><br>
+          <span class="mt-4">
+            <a href="/my-orders" class="text-dark text-decoration-none">
+              My Orders <i class="fa fa-cart-arrow-down text-primary" aria-hidden="true"></i>
+            </a>
+          </span><br>
+          <span class="my-2">
+            <a href="" class="text-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#exampleModal2" data-bs-whatever="@mdo">
+              Change Password <i class="fa fa-user-circle text-primary" aria-hidden="true"></i>
+            </a>
+          </span>
+            </div>
+            <div class="col-md-8">
+               {{#if profileMsg}}
+            <div
+              class="alert alert-success alert-dismissible fade show"
+              role="alert"
+            >
+              <button
+                type="button"
+                class="close"
+                data-dismiss="alert"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only">Close</span>
+              </button>
+              <strong>{{profileMsg}}</strong>
+            </div>
+
+          {{/if}}
+
+          {{#if changePassMsg}}
+            <div
+              class="alert alert-danger alert-dismissible fade show"
+              role="alert"
+            >
+              <button
+                type="button"
+                class="close"
+                data-dismiss="alert"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only">Close</span>
+              </button>
+              <strong>{{changePassMsg}}</strong>
+            </div>
+
+          {{/if}}
+              
+              <div class="card-body p-4">
+               
+                <h6>Information</h6>
+                <hr class="mt-0 mb-4">
+                <div class="row pt-1">
+                  <div class="col-6 mb-3">
+                    <h6>Firt Name</h6>
+                    <input
+                type="text"
+                class="form-control"
+                placeholder="first name"
+                value="{{user.firstName}}"
+                disabled
+              />
+                  </div>
+                  <div class="col-6 mb-3">
+                    <label>Phone</label>
+                    <input
+                type="text"
+                class="form-control"
+                value="{{user.lastName}}"
+                placeholder=""
+                disabled
+              />
+                  </div>
+                </div>
+
+                  <div class="row pt-1">
+                  <div class="col-6 mb-3">
+                    <p>Mobile No</p>
+                    <input
+                type="text"
+                class="form-control"
+                placeholder="enter phone number"
+                value="{{user.phone}}"
+                disabled
+              />
+                    
+                  </div>
+                  <div class="col-6 mb-3">
+                    <p>user email</p>
+
+                    <input
+                type="text"
+                class="form-control"
+                placeholder="Praveen@gmail.com"
+                value="{{user.email}}"
+                disabled
+              />
+                    
+                  </div>
+                </div >
+                <h6 class="mt-5">User Adderss</h6>
+                <hr class="mt-0 mb-4">
+                <div class="row pt-1">
+                  <div class="col-6 mb-3">
+                       <a
+                class="btn btn-outline-primary btn-sm ms-3 px-1"
+                href="/show-address"
+                style="font-size: 13px;"
+              >Show Address</a>
+                    
+                    
+                  </div>
+                  <div class="col-6 mb-3">
+                    <h6></h6>
+                 
+                  </div>
+                </div>
+                <div class="d-flex justify-content-start mt-5">
+                  {{!-- <a href="#!"><i class="fab fa-facebook-f fa-lg me-3"></i></a>
+                  <a href="#!"><i class="fab fa-twitter fa-lg me-3"></i></a>
+                  <a href="#!"><i class="fab fa-instagram fa-lg"></i></a> --}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</section>
+
+
+
+
+
+<style>
+  .gradient-custom {
+/* fallback for old browsers */
+background: #dc65f6;
+
+/* Chrome 10-25, Safari 5.1-6 */
+background: -webkit-linear-gradient(to right bottom, rgb(234, 101, 246), rgba(253, 160, 133, 1));
+
+/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+background: linear-gradient(to right bottom, rgb(246, 101, 232), rgba(253, 160, 133, 1))
+}
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script
+      src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+    ></script>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <!-- JS Validator -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"
+    ></script>
+
+    <!-- form submission file -->
+    <script src="/javascripts/validator.js"> </script>
+
+
+<style>
+  /* user profile */ body { background: rgba(255, 255, 255, 0.963) }
+  .form-control:focus { box-shadow: none; border-color: #BA68C8 }
+  .profile-button { background: rgb(99, 39, 120); box-shadow: none; border: none
+  } .profile-button:hover { background: #682773 } .profile-button:focus {
+  background: #682773; box-shadow: none } .profile-button:active { background:
+  #682773; box-shadow: none } .back:hover { color: #682773; cursor: pointer }
+  .labels { font-size: 16px } .add-experience:hover { background: #BA68C8;
+  color: #fff; cursor: pointer; border: solid 1px #BA68C8 } .profile-div{
+  background: rgba(46, 170, 160, 0.603); box-shadow: 2px 5px 10px;
+  border-radius: 30px; } .address-fields{ background-color: rgba(51, 139, 125,
+  0.589); padding: 40px 5px; box-shadow: 2px 5px 10px; } .profile-view {
+  background-color: rgba(51, 139, 125, 0.589); padding: 40px 5px; box-shadow:
+  2px 5px 10px; }
+</style>
+
+
+<script>
+  //   FILTER INPUT FIELDS
+function setInputFilter(textbox, inputFilter) {
+  [
+    "input",
+    "keydown",
+    "keyup",
+    "mousedown",
+    "mouseup",
+    "select",
+    "contextmenu",
+    "drop",
+  ].forEach(function (event) {
+    textbox.addEventListener(event, function () {
+      if (inputFilter(this.value)) {
+        this.oldValue = this.value;
+        this.oldSelectionStart = this.selectionStart;
+        this.oldSelectionEnd = this.selectionEnd;
+      } else if (this.hasOwnProperty("oldValue")) {
+        this.value = this.oldValue;
+        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+      } else {
+        this.value = "";
+      }
+    });
+  });
+}
+  // ONLY 10 NUMBERS IN PHONE FIELD
+setInputFilter(document.getElementById("phonenumber"), function (value) {
+  return /^\d*$/.test(value) && (value === "" || parseInt(value) <= 9999999999);
+});
+</script>
+
+
+
+<script>
+
+  // Check whether password and retype password is equal in reset password page
+
+var changePassForm = $("#changePassForm");
+changePassForm.validate({
+  rules: {
+    currPass: {
+      required: true,
+      minlength: 5,
+    },
+    newPass: {
+      required: true,
+      minlength: 5,
+    },
+    retryNewPass: {
+      minlength: 5,
+      equalTo: "#newPassword",
+    },
+  },
+});
+
+
+
+$(document).ready(function () {
+  $("#retryNewPass").on("keyup", function () {
+    var password = $("#newPass").val();
+    var confirmPassword = $("#retryNewPass").val();
+    if (password != confirmPassword)
+      $("#CheckPasswordMatch")
+        .html("Password does not match !")
+        .css("color", "red");
+    else
+      $("#CheckPasswordMatch").html("Password match !").css("color", "green");
+  });
+});
+
+
+
+</script>

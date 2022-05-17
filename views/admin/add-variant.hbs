@@ -1,0 +1,321 @@
+<div class="container col-7 mt-3 mb-5 justify-content-center">
+  <div class="signup__form row">
+    <form
+      action="/admin/add-variant?id={{result._id}}"
+      class="col"
+      onsubmit="return onsubmitForm(this)"
+      enctype="multipart/form-data"
+      id="editProductForm"
+      method="post"
+    >
+      <div class="row">
+        <div class="col">
+          <p
+            class="bg-gray-300 p-4 text-left font-weight-bold"
+            style="font-size: 20px;"
+          >Add Product Variant</p>
+          <div class="px-3 px-4">
+            <div class="row">
+              <div class="col">
+                <div class="signup__input">
+                  <p>Product Name: </p>
+                  <input type="text" name="productName" disabled value="{{result.productName}}" />
+                </div>
+              </div>
+              <div class="col">
+                <div class="signup__input">
+                  <p>Product Description: </p>
+                  <textarea
+                    name="productDescription"
+                    id="productDescription"
+                    class="bg-light"
+                    cols="45"
+                    rows="10"
+                    disabled
+                    style="resize: none; font-size: 13px;padding: 10px ; border-radius: 5px;"
+                  >{{result.productDescription}}</textarea>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="signup__input mt-4">
+                  <p>Brand: </p>
+                  <select
+                    class="form-select"
+                    style="border-radius: 30px;"
+                    name="productBrand"
+                    aria-label="Default select example"
+                    id="productBrand"
+                    disabled
+                  >
+                    <option selected value="{{result.productBrand}}" class="bg-gray-400">{{result.productBrand}}</option>
+                    {{#each allBrand}}
+                      <option
+                        value="{{this.brandName}}"
+                      >{{this.brandName}}</option>
+                    {{/each}}
+                  </select>
+                </div>
+              </div>
+              <div class="col">
+                <div class="signup__input mt-4">
+                  <p>Category: </p>
+                  <select
+                    class="form-select"
+                    style="border-radius: 30px;"
+                    name="productCategory"
+                    aria-label="Default select example"
+                    id="categoryChange"
+                    disabled
+                  >
+                    <option selected class="bg-gray-400" value="{{result.productCategory}}">{{result.productCategory}}</option>
+                    {{#each allCategory}}
+                      <option
+                        value="{{this.category}}"
+                      >{{this.category}}</option>
+                    {{/each}}
+                  </select>
+                </div>
+              </div>
+              <div class="col">
+                <div class="signup__input mt-4">
+                  <p>Subcategory: </p>
+                  <select
+                    class="form-select"
+                    style="border-radius: 30px;"
+                    name="productSubcategory"
+                    id="subCategory"
+                    disabled
+                    aria-label="Default select example"
+                  >
+                    <option selected class="bg-gray-400" value="{{result.productSubcategory}}">{{result.productSubcategory}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col">
+                <div class="signup__input mt-3">
+                  <p>Colour: </p>
+                  <select
+                    class="form-select"
+                    style="border-radius: 30px;"
+                    name="productColour"
+                    aria-label="Default select example"
+                    id="productColour"
+                  >
+                    <option selected value="{{result.productVariants.productColour}}" class="bg-gray-400">
+                        {{result.productVariants.productColour}}
+                    </option>
+                    {{#each colours}}
+                      <option
+                        value="{{this}}"
+                      >{{this}}</option>
+                    {{/each}}
+                  </select>
+                  <inputvalue="{{result.productVariants.productColour}}" />
+                </div>
+              </div>
+              <div class="col">
+                <div class="signup__input mt-3">
+                  <p>Quantity: </p>
+                  <input type="text" id="productQuantity" name="productQuantity" value="{{result.productVariants.productQuantity}}" />
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <div class="signup__input mt-3">
+                  <p>Landing Cost: </p>
+                  <input type="text" id="landingCost" name="landingCost" value="{{result.productVariants.landingCost}}" />
+                </div>
+              </div>
+              <div class="col">
+                <div class="signup__input mt-3">
+                  <p>MRP: </p>
+                  <input type="text" id="productPrice" name="productPrice" value="{{result.productVariants.productPrice}}" />
+                </div>
+              </div>
+            </div>
+
+          
+            <div class="col-12">
+                <div id="image-box" style="width: 300px; height: 300px; display: none;"></div>
+                <button class="btn btn-primary mt-3" type="button" style="display: none;" id="crop-btn">Crop</button>
+            </div>
+
+            <div class="row">
+              <div class="col">
+
+                <div class="mt-5">
+                  <label for="">Product Image 1</label>
+                  <img src="/images/product-images/{{result._id}}_1.webp" alt="" style="width: 100px; height:auto" id="imgview1">
+                  {{!-- <div id="preview1"></div> --}}
+                  <input type="file" name="product_Image_1" id="file1" class="form-control"
+                      onchange="return fileValidation('file1','image1','imgview1')">
+                </div>
+
+              </div>
+              <div class="col">
+
+
+                <div class="mt-5">
+                  <label for="">Product Image 2</label>
+                  <img src="/images/product-images/{{result._id}}_2.webp" alt="" style="width: 100px; height:auto" id="imgview2">
+                  {{!-- <div id="preview1"></div> --}}
+                  <input type="file" name="product_Image_2" id="file2" class="form-control"
+                      onchange="return fileValidation('file2','image2','imgview2')">
+                </div>
+
+              </div>
+              <div class="col">
+                
+                <div class="mt-5">
+                  <label for="">Product Image 3</label>
+                  <img src="/images/product-images/{{result._id}}_3.webp" alt="" style="width: 100px; height:auto" id="imgview3">
+                  {{!-- <div id="preview1"></div> --}}
+                  <input type="file" name="product_Image_3" id="file3" class="form-control"
+                      onchange="return fileValidation('file3','image3','imgview3')">
+                </div>
+
+              </div>
+              <div class="col">
+
+                <div class="mt-5">
+                  <label for="">Product Image 4</label>
+                  <img src="/images/product-images/{{result._id}}_4.webp" alt="" style="width: 100px; height:auto" id="imgview4">
+                  {{!-- <div id="preview1"></div> --}}
+                  <input type="file" name="product_Image_4" id="file4" class="form-control"
+                      onchange="return fileValidation('file4','image4','imgview4')">
+              </div>
+
+              </div>
+            </div>
+            <div class="col text-center border-top my-5">
+              <div class="signup__input">
+                <p> </p>
+                <button
+                  id="confirm-btn"
+                  type="submit"
+                  class="btn btn-success px-4 py-2"
+                  style="border-radius: 30px;"
+                >
+                  EDIT PRODUCT
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.js"></script>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+<script type="text/javascript">
+
+
+//   FILTER INPUT FIELDS
+function setInputFilter(textbox, inputFilter) {
+  [
+    "input",
+    "keydown",
+    "keyup",
+    "mousedown",
+    "mouseup",
+    "select",
+    "contextmenu",
+    "drop",
+  ].forEach(function (event) {
+    textbox.addEventListener(event, function () {
+      if (inputFilter(this.value)) {
+        this.oldValue = this.value;
+        this.oldSelectionStart = this.selectionStart;
+        this.oldSelectionEnd = this.selectionEnd;
+      } else if (this.hasOwnProperty("oldValue")) {
+        this.value = this.oldValue;
+        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+      } else {
+        this.value = "";
+      }
+    });
+  });
+}
+
+
+
+// ONLY NUMBERS IN price fields
+setInputFilter(document.getElementById("productPrice"), function (value) {
+  return /^\d*$/.test(value) && (value === "" || parseInt(value) <= 9999999);
+});
+setInputFilter(document.getElementById("landingCost"), function (value) {
+  return /^\d*$/.test(value) && (value === "" || parseInt(value) <= 9999999);
+});
+setInputFilter(document.getElementById("productQuantity"), function (value) {
+  return /^\d*$/.test(value) && (value === "" || parseInt(value) <= 9999999);
+});
+
+
+
+ function fileValidation(file,img,imgview) {
+        const imagebox = document.getElementById('image-box')
+        const crop_btn = document.getElementById('crop-btn')
+        var fileInput = document.getElementById(file);
+        
+        var filePath = fileInput.value;
+        var allowedExtensions = /(\.webp|\.png|\.jpeg|\.JPEG|\.webp)$/i;
+        if (!allowedExtensions.exec(filePath)) {
+            alert('Please upload image files only.');
+            fileInput.value = '';
+            return false;
+        } else {
+            //Image preview
+            const img_data = fileInput.files[0]
+            const url = URL.createObjectURL(img_data)
+            imagebox.innerHTML = `<img src="${url}" id=${img} style="width:100%">`
+            const image = document.getElementById(img)
+            document.getElementById('image-box').style.display = 'block'
+            document.getElementById('crop-btn').style.display = 'block'
+            document.getElementById('confirm-btn').style.display = 'none'
+
+            const cropper = new Cropper(image, {
+                autoCropArea: 1,
+                viewMode: 1,
+                scalable: false,
+                zoomable: false,
+                movable: false,
+                aspectRatio: 16 / 19,
+                //  preview: '.preview',
+                minCropBoxWidth: 180,
+                minCropBoxHeight: 240,
+            })
+            crop_btn.addEventListener('click', () => {
+              var file_1 = file
+                cropper.getCroppedCanvas().toBlob((blob) => {
+                    let fileInputElement = document.getElementById(file_1);
+                    let file = new File([blob], img_data.name, { type: "image/*", lastModified: new Date().getTime() });
+                    let container = new DataTransfer();
+
+                    container.items.add(file);
+                    const img1 = container.files[0]
+                    var url = URL.createObjectURL(img1)
+                    fileInputElement.files = container.files;
+                    document.getElementById(imgview).src = url
+                    document.getElementById('image-box').style.display = 'none'
+                    document.getElementById('crop-btn').style.display = 'none'
+                    document.getElementById('confirm-btn').style.display = 'block'
+                },'image/webp',0.8);
+            });
+        }
+    }
+    
+</script>

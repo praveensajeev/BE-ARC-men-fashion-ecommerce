@@ -1,0 +1,219 @@
+<div class="container col-md-7 mt-3 mb-5 justify-content-center">
+  <div class="signup__form row">
+    
+    <form
+      action="/admin/manage-banner"
+      class="col"
+      enctype="multipart/form-data"
+      id="manageBannerForm"
+      method="post"
+    >
+      <div class="row">
+        <div class="col-md">
+          <p
+            class="bg-gray-300 p-4 text-left font-weight-bold"
+            style="font-size: 20px;"
+          >Add Banner Images</p>
+
+            <div class="col-12">
+                <div id="image-box" style="width: 300px; height: 300px; display: none;"></div>
+                <button class="btn btn-primary mt-3" type="button" style="display: none;" id="crop-btn">Crop</button>
+            </div>
+            <div class="my-3 fs-3">Top Banner</div>
+            <div class="row border-b-4">
+                <div class="signup__input col-md-6">
+                  <p class="">Banner Head 1: </p>
+                  <input type="text" class="" name="topHead1" value="{{allBanner.topHead1}}">
+                  <p>Banner Text 1: </p>
+                  <input type="text" name="topText1" value="{{allBanner.topText1}}">
+                </div>
+
+                <div class="mt-2 col-6">
+                  <label for="">Top Banner Image 1 </label>
+                  <img src="/images/banner-images/topBanner1.webp" alt="" style="width: 200px; height:auto" id="imgview1">
+                  {{!-- <div id="preview1"></div> --}}
+                  <input type="file" name="top_banner_image_1" id="file1" class="form-control"
+                      onchange="return fileValidation('file1','image1','imgview1')">
+                </div>
+            </div>
+            <div class="row border-b-4">
+                <div class="signup__input col-md-6">
+                  <p>Banner Head 2: </p>
+                  <input type="text" name="topHead2" value="{{allBanner.topHead2}}">
+                  <p>Banner Text 2: </p>
+                  <input type="text" name="topText2" value="{{allBanner.topText2}}">
+                </div>
+
+                <div class="mt-2 col-6">
+                  <label for="">Top Banner Image 2 </label>
+                  <img src="/images/banner-images/topBanner2.webp" alt="" style="width: 200px; height:auto" id="imgview2">
+                  {{!-- <div id="preview1"></div> --}}
+                  <input type="file" name="top_banner_image_2" id="file2" class="form-control"
+                      onchange="return fileValidation('file2','image2','imgview2')">
+                </div>
+            </div>
+            <div class="row border-b-4">
+                <div class="signup__input col-md-6">
+                  <p>Banner Head 3: </p>
+                  <input type="text" name="topHead3" value="{{allBanner.topHead3}}">
+                  <p>Banner Text 3: </p>
+                  <input type="text" name="topText3" value="{{allBanner.topText3}}">
+                </div>
+
+                <div class="mt-2 col-6">
+                  <label for="">Top Banner Image 3 </label>
+                  <img src="/images/banner-images/topBanner3.webp" alt="" style="width: 200px; height:auto" id="imgview3">
+                  {{!-- <div id="preview1"></div> --}}
+                  <input type="file" name="top_banner_image_3" id="file3" class="form-control"
+                      onchange="return fileValidation('file3','image3','imgview3')">
+                </div>
+            </div>
+            <div class="my-3 fs-3">Offer Banner</div>
+
+            <div class="row border-b-4">
+
+                <div class="signup__input col-6">
+                  <p>Banner Head: </p>
+                  <input type="text" name="offerHead" value="{{allBanner.offerHead}}">
+                  <p>Banner Text: </p>
+                  <input type="text" name="offerText" value="{{allBanner.offerText}}">
+                </div>
+
+                <div class="mt-2 col-6">
+                  <label for="">Offer Banner Image </label>
+                  <img src="/images/banner-images/offerBanner.jpg" alt="" style="width: 200px; height:auto" id="imgview4">
+                  {{!-- <div id="preview1"></div> --}}
+                  <input type="file" name="offer_banner_image_1" id="file4" class="form-control"
+                      onchange="return fileValidation('file4','image4','imgview4')">
+                </div>
+              </div>
+            <div class="col text-center border-top my-5">
+              <div class="signup__input">
+                <p> </p>
+                <button
+                  id="confirm-btn"
+                  type="submit"
+                  class="btn btn-success px-4 py-2"
+                  style="border-radius: 30px;"
+                >
+                  ADD BANNER
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.js"></script>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+<script type="text/javascript">
+
+
+//   FILTER INPUT FIELDS
+function setInputFilter(textbox, inputFilter) {
+  [
+    "input",
+    "keydown",
+    "keyup",
+    "mousedown",
+    "mouseup",
+    "select",
+    "contextmenu",
+    "drop",
+  ].forEach(function (event) {
+    textbox.addEventListener(event, function () {
+      if (inputFilter(this.value)) {
+        this.oldValue = this.value;
+        this.oldSelectionStart = this.selectionStart;
+        this.oldSelectionEnd = this.selectionEnd;
+      } else if (this.hasOwnProperty("oldValue")) {
+        this.value = this.oldValue;
+        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+      } else {
+        this.value = "";
+      }
+    });
+  });
+}
+
+
+
+// ONLY NUMBERS IN price fields
+setInputFilter(document.getElementById("productPrice"), function (value) {
+  return /^\d*$/.test(value) && (value === "" || parseInt(value) <= 9999999);
+});
+setInputFilter(document.getElementById("landingCost"), function (value) {
+  return /^\d*$/.test(value) && (value === "" || parseInt(value) <= 9999999);
+});
+setInputFilter(document.getElementById("productQuantity"), function (value) {
+  return /^\d*$/.test(value) && (value === "" || parseInt(value) <= 9999999);
+});
+
+
+
+ function fileValidation(file,img,imgview) {
+        const imagebox = document.getElementById('image-box')
+        const crop_btn = document.getElementById('crop-btn')
+        var fileInput = document.getElementById(file);
+        
+        var filePath = fileInput.value;
+        var allowedExtensions = /(\.jpg|\.png|\.jpeg|\.JPEG|\.webp)$/i;
+        if (!allowedExtensions.exec(filePath)) {
+            {{!-- swal({
+              title: "Please Select Payment Method to Place Order",
+              icon: 'warning',
+              dangerMode:true,
+            }) --}}
+            fileInput.value = '';
+            return false;
+        } else {
+            //Image preview
+            const img_data = fileInput.files[0]
+            const url = URL.createObjectURL(img_data)
+            imagebox.innerHTML = `<img src="${url}" id=${img} style="width:100%">`
+            const image = document.getElementById(img)
+            document.getElementById('image-box').style.display = 'block'
+            document.getElementById('crop-btn').style.display = 'block'
+            document.getElementById('confirm-btn').style.display = 'none'
+
+            const cropper = new Cropper(image, {
+                autoCropArea: 1,
+                viewMode: 1,
+                scalable: false,
+                zoomable: false,
+                movable: false,
+                aspectRatio: 19 / 8,
+                //  preview: '.preview',
+                minCropBoxWidth: 220,
+                minCropBoxHeight: 300,
+            })
+            crop_btn.addEventListener('click', () => {
+              var file_1 = file
+                cropper.getCroppedCanvas().toBlob((blob) => {
+                    let fileInputElement = document.getElementById(file_1);
+                    let file = new File([blob], img_data.name, { type: "image/*", lastModified: new Date().getTime() });
+                    let container = new DataTransfer();
+
+                    container.items.add(file);
+                    const img1 = container.files[0]
+                    var url = URL.createObjectURL(img1)
+                    fileInputElement.files = container.files;
+                    document.getElementById(imgview).src = url
+                    document.getElementById('image-box').style.display = 'none'
+                    document.getElementById('crop-btn').style.display = 'none'
+                    document.getElementById('confirm-btn').style.display = 'block'
+                },'image/webp',0.9);
+            });
+        }
+    }
+    
+</script>

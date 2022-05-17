@@ -1,0 +1,412 @@
+
+   <!-- Hero section begin --> 
+
+    <div class="hero ">
+      <div class="glide" id="glide_1">
+        <div class="glide__track" data-glide-el="track">
+          <ul class="glide__slides">
+            <li class="glide__slide">
+              <div class="center">
+                <div class="left">
+                  <span class="">New Inspiration 2022</span>
+                  <h1 class="" style="font-weight: 900;">NEW COLLECTION!</h1>
+                  <p>Trending from men's style collection</p>
+                  <a href="#" class="hero-btn">SHOP NOW</a>
+                </div>
+                <div class="right  " style="margin-left: 150px; max-width:530px">
+                    <img class="img1" src="https://images.unsplash.com/photo-1520975661595-6453be3f7070?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTAyfHxtZW5zJTIwZmFzaGlvbnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60" alt="">
+                </div>
+              </div>
+            </li>
+            <li class="glide__slide">
+              <div class="center">
+                <div class="left">
+                  <span>New Inspiration 2022</span>
+                  <h1 style="font-weight: 800;">THE PERFECT MATCH!</h1>
+                  <p>Trending from men's  style collection</p>
+                  <a href="#" class="hero-btn">SHOP NOW</a>
+                </div>
+                <div class="right" style="margin-left: 150px;">
+                  <img class="img2" src="https://images.unsplash.com/photo-1614714053570-6c6b6aa54a6d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80" alt="">
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    </header>
+
+
+    <!-- Hero section begin -->
+
+
+
+
+
+    <!-- Categories Section -->
+
+
+    
+
+
+    
+    <section class="section category">
+        
+        
+<div class="title">
+  <h1 style="font-weight: 900;">DEALS ON TOP BRANDS</h1>
+</div>
+
+
+      <div class="cat-center">
+        
+
+        {{#each allBrands}}
+          
+        
+        <div class="cat">
+            <a href="/brand-view?id={{this.brandName}}">
+            <img src="/images/brand-logo/{{this._id}}.png" alt="" />
+            </a>
+          
+          {{!-- <div>
+            <p>{{this.category}}</p>
+          </div> --}}
+        </div>
+
+        {{/each}}
+       
+        
+        
+      </div>
+    </section>
+
+
+<!-- Cardssssssss -->
+
+
+<div class="title">
+        <h1 style="font-weight: 900;">SUMMER KEY ITEMS</h1>
+        <p>All the latest picked from designer of our store</p>
+      </div>
+
+
+
+
+<div class="parent">
+
+  <section class="flip-card">
+    <div class="inside">
+      <div class="front">
+        
+        <img src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5/3b312c18-236b-498b-909d-4b8d4c15bf04/sportswear-club-mens-fleece-floral-hoodie-GC327q.png">
+      </div><!-- end front -->
+      <div class="back">
+        <img src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5/fac2bc07-57c8-4404-a070-88994252737d/sportswear-club-mens-fleece-floral-hoodie-GC327q.png" alt="">
+      </div><!-- end back -->
+    </div><!-- end inside -->
+  </section><!-- end flip-card -->
+
+    <section class="flip-card">
+    <div class="inside">
+      <div class="front">
+        <img src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5/01318c5f-092e-4f96-9319-dc8f01aaf039/spring-mens-top-RHb2XN.png" alt="">
+      </div><!-- end front -->
+      <div class="back">
+        <img src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5/9bf0d414-a39d-420c-a3e7-18abf9a8082a/spring-mens-top-RHb2XN.png" alt="">
+      </div><!-- end back -->
+    </div><!-- end inside -->
+  </section><!-- end flip-card -->
+
+</div><!-- end parent -->
+
+
+
+
+
+
+<!-- product slider -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Products -->
+    <section class="section new-arrival">
+      <div class="title">
+        <h1 style="font-weight: 900;">BIGGEST DEALS ON TOP BRANDS</h1>
+        <p>All the latest picked from designer of our store</p>
+      </div>
+
+      <div class="product-center">
+          {{#each offerProducts}}
+        <div class="product-item">
+          <div class="overlay">
+            <a onclick="productDetail('{{this._id}}')" class="product-thumb">
+              <img src="/images/product-images/{{this._id}}/{{this.productVariants.0.variantId}}_1.webp" alt="" />
+            </a>
+          </div>
+          <div class="product-info">
+
+            <h6>{{this.productBrand}}</h6>
+            <h6 class="text-danger">{{this.productVariants.0.offer}}%</h6>          
+            
+            
+            {{#if this.productVariants.0.offerPrice}}
+            <h5 ><span class="text-danger text-decoration-line-through "> ₹{{this.productVariants.0.productPrice}}</span> ₹{{this.productVariants.0.offerPrice}}</h5>
+            {{else}}
+            <h5> ₹{{this.productVariants.0.productPrice}}</h5>
+            {{/if}}
+          </div>
+         
+          <ul class="icons">
+            <li><a class="add-to-wishlist" onclick="addToWishlist('{{this._id}}','{{../user._id}}')"><i class="bx bx-heart"></i></a></li>
+            <li><a onclick="productDetail('{{this._id}}')"><i class="bx bx-search"></i></a></li>
+            {{#if this.productVariants.0.offerPrice}}
+            <li><a  onclick="addToCart('{{this._id}}','{{this.productVariants.0.offerPrice}}')" class="add-cart"><i class="bx bx-cart"></i></a></li>
+            {{else}}
+             <li><a  onclick="addToCart('{{this._id}}','{{this.productVariants.0.productPrice}}')" class="add-cart"><i class="bx bx-cart"></i></a></li>
+             {{/if}}
+          </ul>
+        </div> 
+        {{/each}}                    
+      </div>
+    </section >
+
+
+
+
+
+ 
+
+   
+   
+
+    <!-- Footer -->
+   
+
+
+
+<script>
+  
+</script>
+
+
+
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<script>
+  function productDetail(id){ 
+    window.location = `/product-details?id=${id}` 
+  }
+
+  function getSubProducts(subName){
+    $.ajax({
+      url: '/getSubProducts',
+      method: 'post',
+      data: {subName},
+      success:(status)=>{
+        location.href = '/product-list'
+      }
+    })
+  }
+
+  function getBrandProducts(brand){
+    $.ajax({
+      url: `/getBrandProducts?brandName=${brand}`,
+      method: 'get',
+      success:(status)=>{
+        location.href = '/product-list'
+      }
+    })
+  }
+
+  // SEARCH PRODUCT
+
+    function sendData(e){
+      const searchResult = document.getElementById('searchResult')
+      let match = e.value.match(/^[a-zA-Z ]*/)
+      let match2 = e.value.match(/\s*/)
+
+      if(match2[0] === e.value){
+        searchResult.innerHTML = ''
+        return
+      }
+      if(match[0] === e.value){
+
+        fetch('searchProduct',{
+          method: "post",
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({payload: e.value})
+        }).then(res => res.json()).then(data => {
+          let payload = data.payload
+          searchResult.innerHTML = ''
+          if(payload.length < 1){
+            searchResult.innerHTML = "<p>Sorry, Nothing Found</p>"
+            return;
+          }
+          payload.forEach((item,index)=>{
+            if(index > 0) searchResult.innerHTML += '<hr>'
+            searchResult.innerHTML += `<a onclick="productDetail('${item._id}')"> <p> ${item.productName} </p> </a>`
+          })
+          return
+        })
+      }
+
+      searchResult.innerHTML = ''
+
+    }
+
+</script>
+<script>
+  
+function addToCart(proId,subTotal){
+  $.ajax({
+    console.log("hi praveen")
+    url: '/add-to-cart/'+proId,
+    data:{
+      productTotal:subTotal
+    },
+    method: 'post',
+    success:(response)=>{
+      if(response.status){
+
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'bottom-end',
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+          }
+        })
+        Toast.fire({
+          icon: 'success',
+          title: 'Product Added To Cart'
+        })
+        let count = $('.cart-count').html()
+        count = parseInt(count) + 1
+        $('.cart-count').html(count)
+      }
+      else if(response.productExist){
+
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'bottom-end',
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+          }
+        })
+        Toast.fire({
+          icon: 'warning',
+          title: 'Product Already Exists On Cart'
+        })
+      }
+      else{
+        location.replace('/login')
+      }
+    }
+  })
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<style>
+  .card {
+  width: 260px;
+  
+}
+
+.card__image img {
+  background-color: #e88888;
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+  fit
+}
+
+
+
+
+
+
+.parent {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.flip-card {
+  background-color: transparent;
+  width: 300px;
+  height: 370px;
+  border: 1px solid #f1f1f1;
+  perspective: 950px;
+}
+
+/* This division hold the front and back elements */
+.inside {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.5s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .inside {
+  transform: rotateY(180deg);
+}
+
+/* Place the front and back  */
+.front, .back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  background-color: black;
+  color: white;
+}
+
+
+/* Back Differences */
+.back {
+  background-color: #eee;
+  color: black;
+  transform: rotateY(180deg);
+}
+</style>    

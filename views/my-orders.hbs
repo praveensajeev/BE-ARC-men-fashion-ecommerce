@@ -1,0 +1,163 @@
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
+
+<div class="container bootdey my-5" style="background-color:#ffff ;">
+    <div class="panel panel-default panel-order mt-5" style="background-color: rgb(255, 255, 255);">
+        <div class="panel-heading">
+            <strong>Order history</strong>
+        </div>
+        {{#if allOrders}}
+            {{#each allOrders}}
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-1"><img src="/images/product-images/{{this.product._id}}/{{this.product.productVariants.variantId}}_1.webp" class="media-object img-thumbnail" /></div>
+                    <div class="col-md-11">
+                        <div class="row">
+                            
+                            <div class="col-md-12">
+                                {{#if this.cancelled}}
+                                    <div class="pull-right"><label class="label label-danger">{{this.status}}</label></div>
+                                {{else}}
+                                    <div class="pull-right"><label class="label label-success">{{this.status}}</label></div>
+                                {{/if}}
+                                <span><strong>{{this.product.productName}}</strong></span> <span class="label label-info"> {{this.product.productVariants.productColour}} </span><br />
+                                <span>
+                                    Quantity : {{this.quantity}}
+                                        <br>
+                                    cost: ₹{{this.subTotal}} <br>
+                                    Payment Method: {{this.paymentMethod}}
+                                     <br> <br>
+                                </span>
+                                <div>
+                                    <span class="fw-bold">  
+                                        Address:
+                                    </span>
+                                    <span class="fw-lighter">
+                                        {{deliveryDetails.houseNumber}}
+                                        {{deliveryDetails.streetAddress}}
+                                        {{deliveryDetails.locality}}
+                                    </span>
+                                </div>
+                                {{#if this.cancelled}}
+                                
+                                {{else}}
+                                    {{#if this.delivered}}
+                                     <a data-placement="top" class="btn btn-primary btn-xs glyphicon glyphicon-trash" onclick="cancelOrder('{{this._id}}','{{this.product._id}}')" title="Danger">Return</a>
+                                    
+                                {{else}}
+
+                                <a data-placement="top" class="btn btn-danger btn-xs glyphicon glyphicon-trash" onclick="cancelOrder('{{this._id}}','{{this.product._id}}')" title="Danger">Cancel</a>
+                                
+                                    {{/if}}
+                                {{/if}}
+                            </div>
+                            <div class="col-md-12">Ordered On: {{this.dateISO}}</div>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            {{/each}}
+        {{else}}
+            <div class="col-md-6 my-5 text-center centered">
+                <div class="card">
+                <div class="card-header bg-light">
+                    <i class="fa fa-shopping-bag fs-2 my-2" aria-hidden="true"></i>
+                </div>
+                <div class="card-body bg-dark text-white">
+                    <h2 class="card-title mt-4"> EMPTY ORDER </h2>
+                    <p class="card-title mt-4"> Please Order Something... </p>
+                    <a href="/" class="btn btn-light text-dark my-4">Continue Shopping</a>
+                </div>
+                </div>
+            </div>
+        {{/if}}
+    </div>
+</div>
+
+<script>
+    function cancelOrder(orderId,proId){
+        swal({
+        title: "Are you sure to cancel this product ?",
+        icon: 'warning',
+        buttons: true,
+        dangerMode:true,
+    }).then((willCancel)=>{
+        if(willCancel){
+            $.ajax({
+                url: '/cancel-product',
+                data: {
+                    orderId: orderId,
+                    proId: proId
+                },
+                method: 'post',
+                success:(resp)=>{
+                    if(resp.status){
+                        swal({
+                            title: "Success!",
+                            text: "Ordered Cancelled Successfully",
+                            icon: "success",
+                        }).then(()=>{
+                            location.href = '/my-orders'
+                        })
+                    }
+                }
+            })
+        }
+    })
+    }
+</script>
+
+<style>
+
+
+body{
+background:rgb(255, 255, 255);
+}
+.panel-order .row {
+	border-bottom: 1px solid #ccc;
+}
+.panel-order .row:last-child {
+	border: 0px;
+}
+.panel-order .row .col-md-1  {
+	text-align: center;
+	padding-top: 15px;
+}
+.panel-order .row .col-md-1 img {
+	width: 50px;
+	max-height: 50px;
+}
+.panel-order .row .row {
+	border-bottom: 0;
+}
+.panel-order .row .col-md-11 {
+	border-left: 1px solid #ccc;
+}
+.panel-order .row .row .col-md-12 {
+	padding-top: 7px;
+	padding-bottom: 7px; 
+}
+.panel-order .row .row .col-md-12:last-child {
+	font-size: 11px; 
+	color: #555;  
+	background: #efefef;
+}
+.panel-order .btn-group {
+	margin: 0px;
+	padding: 0px;
+}
+.panel-order .panel-body {
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+.panel-order .panel-deading {
+	margin-bottom: 0;
+}                    
+
+
+</style>

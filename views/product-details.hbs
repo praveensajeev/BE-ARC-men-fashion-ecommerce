@@ -1,0 +1,417 @@
+
+<!-- Shop Details Section Begin -->
+<section class="shop-details">
+  <div class="product__details__pic" style="background-color: rgb(255, 255, 255);">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="product__details__breadcrumb">
+            <a href="/">Home</a>
+            <span>Product Details</span>
+          </div>
+        </div>
+      </div>
+      {{#each productDetails}}
+      <div class="row">
+        <div class="col-lg-2 col-md-2">
+          <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                data-toggle="tab"
+                href="#tabs-1"
+                role="tab"
+              >
+                <div
+                  class="product__thumb__pic set-bg"
+                  data-setbg="/images/product-images/{{this._id}}/{{this.productVariants.0.variantId}}_1.webp"
+                >
+                </div>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">
+                <div
+                  class="product__thumb__pic set-bg"
+                  data-setbg="/images/product-images/{{this._id}}/{{this.productVariants.0.variantId}}_2.webp"
+                >
+                </div>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">
+                <div
+                  class="product__thumb__pic set-bg"
+                  data-setbg="/images/product-images/{{this._id}}/{{this.productVariants.0.variantId}}_3.webp"
+                >
+                </div>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#tabs-4" role="tab">
+                <div
+                  class="product__thumb__pic set-bg"
+                  data-setbg="/images/product-images/{{this._id}}/{{this.productVariants.0.variantId}}_4.webp"
+                >
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-lg-6 col-md-6">
+          <div class="tab-content">
+            <div class="tab-pane active" id="tabs-1" role="tabpanel">
+              <div class="product__details__pic__item">
+                <img src="/images/product-images/{{this._id}}/{{this.productVariants.0.variantId}}_1.webp" alt="" class="imageZoom1" />
+              </div>
+            </div>
+            <div class="tab-pane" id="tabs-2" role="tabpanel">
+              <div class="product__details__pic__item">
+                <img src="/images/product-images/{{this._id}}/{{this.productVariants.0.variantId}}_2.webp" alt="" class="imageZoom2" />
+              </div>
+            </div>
+            <div class="tab-pane" id="tabs-3" role="tabpanel">
+              <div class="product__details__pic__item">
+                <img src="/images/product-images/{{this._id}}/{{this.productVariants.0.variantId}}_3.webp" alt="" class="imageZoom3" />
+              </div>
+            </div>
+            <div class="tab-pane" id="tabs-4" role="tabpanel">
+              <div class="product__details__pic__item">
+                <img src="/images/product-images/{{this._id}}/{{this.productVariants.0.variantId}}_4.webp" alt="" class="imageZoom4" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-4 mt-5">
+          <div class="product__details__content">
+            <div class="justify-content-center">
+              <div class="product__details__text">
+
+                <h4 class="mt-sm-3 mb-3">{{this.productName}}</h4>
+                {{#if this.productVariants.0.offerPrice}}
+                  <h3>₹{{this.productVariants.0.offerPrice}} 
+                    <span>{{this.productVariants.0.productPrice}}</span>     {{!-- if offer price  --}}
+                  </h3>
+                {{else}}
+                  <h3>₹{{this.productVariants.0.productPrice}} 
+                  </h3>
+                {{/if}}
+
+
+                <div class="product__details__option__color ml-sm-3 mt-sm-4">
+                  {{!-- <span class="font-weight-bold">Color:</span>
+                  <label class="" style="background-color: {{this.productVariants.0.productColour}};" for="sp-1">
+                    <input type="radio" id="sp-1" value="{{this.productVariants.0.productColour}}" />
+                  </label>
+                   --}}
+
+                     
+                <div class="product__details__tab__content">
+                  <div class="product__details__tab__content__item">
+                    <span class="font-weight-bold">Product Infomation</span>
+
+                    <ul class="mt-3" style="font-size: 20px !important;">
+                      <li type="none">
+                      
+                       {{!-- <pre> --}}
+                          {{this.productDescription}}  
+
+                       {{!-- </pre> --}}
+                        
+                      </li>
+                    </ul>
+
+                  </div>
+                </div>
+
+                <div class="product__details__cart__option mt-4">
+
+                <div class="product__details__cart__option">
+                  {{#if this.productVariants.0.offerPrice}}
+                    <button onclick="addToCart('{{this._id}}',{{this.productVariants.0.offerPrice}})" class="primary-btn add-cart">
+                      ADD TO
+                      <i class="fas fa-cart-plus"></i>
+                    </button>
+                  {{else}}
+                    <button onclick="addToCart('{{this._id}}',{{this.productVariants.0.productPrice}})" class="primary-btn add-cart">
+                      ADD TO
+                      <i class="fas fa-cart-plus"></i>
+                    </button>
+                  {{/if}}
+                  <a
+                    href="/buy-now?proId={{this._id}}"
+                    class="primary-btn"
+                    style="background-color: #b53497;"
+                  >Buy now</a>
+                  <div class="product__details__btns__option mt-sm-4">
+            <a onclick="addToWishlist('{{this._id}}','{{../user._id}}')" style="font-size: 15px;"><i class="fa fa-heart"></i>
+              add to wishlist</a>
+            {{!-- <a href="#" class="mt-2" style="font-size: 15px;"><i
+                class="fa fa-exchange"
+              ></i>
+              Add To Compare</a> --}}
+              
+
+              
+
+              
+
+           
+          </div>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="product__details__text_2 px-sm-5 mt-sm-5">
+          <div class="product_details_text px-sm-5">
+          </div>
+
+          <div class="rating mt-sm-3">
+            {{!-- <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-o"></i>
+            <span> - 55 Reviews</span> --}}
+          </div>
+
+         
+
+        </div>
+      </div>
+      {{/each}}
+
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="product__details__tab">
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  data-toggle="tab"
+                  href="#tabs-5"
+                  role="tab" style="color: rgb(217, 0, 0);"
+                >Related Products</a>
+              </li>
+              {{!-- <li class="nav-item">
+                <a
+                  class="nav-link"
+                  data-toggle="tab"
+                  href="#tabs-6"
+                  role="tab"
+                >Customer Previews(5)</a>
+              </li> --}}
+            </ul>
+
+            
+<section class=" row mt-5">
+      
+
+      <div class="product-center  ">
+          {{#each relatedProducts}}
+        <div class="product-item ">
+          <div class="overlay">
+            <a onclick="productDetail('{{this._id}}')" class="product-thumb">
+              <img src="/images/product-images/{{this._id}}/{{this.productVariants.0.variantId}}_1.webp" alt="" />
+            </a>
+          </div>
+          <div class="product-info">
+            <h6>{{this.productBrand}}</h6>
+            {{!-- {{#if this.products.productVariants.0.offerPrice}} --}}
+            <a href="/"></a>
+            {{!-- <span href="" class="text-danger">% offer</span> --}}
+            <span>{{this.productSubcategory}}</span>
+            {{#if this.productVariants.0.offerPrice}}
+            <h5 ><span class="text-danger text-decoration-line-through "> ₹{{this.productVariants.0.productPrice}}</span> ₹{{this.productVariants.0.offerPrice}}</h5>
+            {{else}}
+            <h5> ₹{{this.productVariants.0.productPrice}}</h5>
+            {{/if}}
+
+          </div>
+         
+          <ul class="icons">
+            <li><a class="add-to-wishlist" onclick="addToWishlist('{{this._id}}','{{../user._id}}')"><i class="bx bx-heart"></i></a></li>
+            <li><a onclick="productDetail('{{this._id}}')"><i class="bx bx-search"></i></a></li>
+            {{#if this.productVariants.0.offerPrice}}
+            <li><a  onclick="addToCart('{{this._id}}','{{this.productVariants.0.offerPrice}}')" class="add-cart"><i class="bx bx-cart"></i></a></li>
+            {{else}}
+             <li><a  onclick="addToCart('{{this._id}}','{{this.productVariants.0.productPrice}}')" class="add-cart"><i class="bx bx-cart"></i></a></li>
+             {{/if}}
+          </ul> 
+        </div> 
+        {{/each}}                    
+      </div>
+    </section > 
+
+            
+              
+            
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<link rel="stylesheet" href="/stylesheets/image-zoom.css" />
+
+<script src="/javascripts/jquery-3.3.1.min.js"></script>
+<script src="/javascripts/image-zoom.js" defer></script>
+<script src="/javascripts/image-zoom.min.js"></script>
+
+
+<script>
+
+  $(function(){
+    $('.imageZoom1').imageZoom();
+  });
+
+  $(function(){
+    $('.imageZoom2').imageZoom();
+  });
+
+  $(function(){
+    $('.imageZoom3').imageZoom();
+  });
+
+  $(function(){
+    $('.imageZoom4').imageZoom();
+  });
+</script>
+
+<script src="/javascripts/validator.js"></script>
+
+
+
+
+
+
+
+
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<script>
+  function productDetail(id){ 
+    window.location = `/product-details?id=${id}` 
+  }
+
+  function getSubProducts(subName){
+    $.ajax({
+      url: '/getSubProducts',
+      method: 'post',
+      data: {subName},
+      success:(status)=>{
+        location.href = '/product-list'
+      }
+    })
+  }
+
+  function getBrandProducts(brand){
+    $.ajax({
+      url: `/getBrandProducts?brandName=${brand}`,
+      method: 'get',
+      success:(status)=>{
+        location.href = '/product-list'
+      }
+    })
+  }
+
+  // SEARCH PRODUCT
+
+    function sendData(e){
+      const searchResult = document.getElementById('searchResult')
+      let match = e.value.match(/^[a-zA-Z ]*/)
+      let match2 = e.value.match(/\s*/)
+
+      if(match2[0] === e.value){
+        searchResult.innerHTML = ''
+        return
+      }
+      if(match[0] === e.value){
+
+        fetch('searchProduct',{
+          method: "post",
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({payload: e.value})
+        }).then(res => res.json()).then(data => {
+          let payload = data.payload
+          searchResult.innerHTML = ''
+          if(payload.length < 1){
+            searchResult.innerHTML = "<p>Sorry, Nothing Found</p>"
+            return;
+          }
+          payload.forEach((item,index)=>{
+            if(index > 0) searchResult.innerHTML += '<hr>'
+            searchResult.innerHTML += `<a onclick="productDetail('${item._id}')"> <p> ${item.productName} </p> </a>`
+          })
+          return
+        })
+      }
+
+      searchResult.innerHTML = ''
+
+    }
+
+</script>
+<script>
+  
+function addToCart(proId,subTotal){
+  $.ajax({
+    console.log("hi praveen")
+    url: '/add-to-cart/'+proId,
+    data:{
+      productTotal:subTotal
+    },
+    method: 'post',
+    success:(response)=>{
+      if(response.status){
+
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'bottom-end',
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+          }
+        })
+        Toast.fire({
+          icon: 'success',
+          title: 'Product Added To Cart'
+        })
+        let count = $('.cart-count').html()
+        count = parseInt(count) + 1
+        $('.cart-count').html(count)
+      }
+      else if(response.productExist){
+
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'bottom-end',
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+          }
+        })
+        Toast.fire({
+          icon: 'warning',
+          title: 'Product Already Exists On Cart'
+        })
+      }
+      else{
+        location.replace('/login')
+      }
+    }
+  })
+}
+</script>

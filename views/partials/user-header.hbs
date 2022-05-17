@@ -1,0 +1,94 @@
+<!-- Page Preloder -->
+{{!-- <div id="preloder">
+  <div class="loader"></div>
+</div> --}}
+
+<!-- Offcanvas Menu Begin -->
+<div class="offcanvas-menu-overlay"></div>
+<div class="offcanvas-menu-wrapper">
+  <div class="offcanvas__option">
+  </div>
+  <div class="offcanvas__nav__option">
+    <a href="/wishlist"><img src="img/icon/heart.png" alt="" /></a>
+    <div class="dropdown">
+            <img
+                src="img/icon/profile-icon.png"
+                class="dropbtn me-4"
+                alt=""
+              />
+            <div class="dropdown-content">
+              {{#if user}}
+                <button class=" mr-0" disabled>{{user.email}}</button>
+                <a href="/user-profile"class='btn mr-0'>Profile</a>
+                <a href="/my-orders"class='btn mr-0'>My Orderes</a>
+                <a href="/"class='btn mr-0'>Logout</a>
+              {{else}}
+                <a href="/signup"class='btn'>Signup</a>
+                <a href="/login"class='btn'>Login</a>
+              {{/if}}
+            </div>
+          </div>
+    <a href="/cart"><img src="img/icon/cart.png" alt="" /><span
+        class="badge rounded-pill bg-warning text-dark cart-count"
+      > {{cartCount}} </span></a>
+  </div>
+  <div id="mobile-menu-wrap"></div>
+  <div class="offcanvas__text">
+    <p>Free shipping, 30-day return or refund guarantee.</p>
+  </div>
+</div>
+<!-- Offcanvas Menu End -->
+
+<!-- Header Section Begin -->
+<header class="header">
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-md-3">
+        <div class="header__logo ">
+         <a href="/"> <h5 class="" style="color:#222;font-weight:900;">BE ARC  </h5></a>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-6">
+        <nav class="header__menu mobile-menu">
+          <ul type="none">
+            <li class=""><a href="/">Home</a></li>
+            <li><a href="/product-list">Shop</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="col-lg-3 col-md-3">
+        <div class="header__nav__option">
+
+          <a href="/wishlist"><img src="img/icon/heart.png" alt="" /></a>
+
+          <div class="dropdown">
+            <img
+                src="img/icon/profile-icon.png"
+                class="dropbtn me-4"
+                alt=""
+              />
+            <div class="dropdown-content">
+              {{#if user}}
+              <button class="btn  mr-0" disabled>{{user.email}}</button>
+                <a href="/user-profile"class='btn  mr-0'>Profile</a>
+                <a href="/my-orders"class='btn  mr-0'>My Orderes</a>
+                <a href="/logout"class='btn  mr-0'>Logout</a>
+              {{else}}
+                <a href="/signup"class='btn mr-0'>Signup</a>
+                <a href="/login"class='btn'>Login</a>
+              {{/if}}
+            </div>
+          </div>
+
+          <a href="/cart"><img src="img/icon/cart.png" alt="" /><span
+              class="badge rounded-pill bg-warning text-dark cart-count"
+            >{{cartCount}}</span></a>
+        </div>
+      </div>
+    </div>
+    <div class="canvas__open"><i class="fas fa-bars"></i></div>
+  </div>
+</header>
+<!-- Header Section End -->
