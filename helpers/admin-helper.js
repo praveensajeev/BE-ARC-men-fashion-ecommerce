@@ -327,7 +327,72 @@ getdailySales:()=>{
   })
 },
 
-getCatSales:()=>{
+// ........................................monthlySales................
+
+getMonthlySales:()=>{
+  return new Promise(async(resolve,reject)=>{
+    let dailySale = await db.get().collection(collections.ORDER_COLLECTION).aggregate([
+      {
+        $unwind: "$products"
+      },
+      {
+        $match:{
+          "products.status": "Delivered"
+        }
+      },
+      {
+        $group:{
+          _id: {$dateToString: {format: "%Y-%m",date:"$date"}},
+          totalAmount: {$sum:"$products.subTotal"},
+          count:{$sum:1}
+        }
+      },
+      {
+        $sort: {_id:-1}
+      },
+      {
+        $limit: 7
+      }
+    ]).toArray()
+    resolve(dailySale)
+  })
+},
+
+//.............................yearly sales......................
+getyearlySales:()=>{
+  return new Promise(async(resolve,reject)=>{
+    let dailySale = await db.get().collection(collections.ORDER_COLLECTION).aggregate([
+      {
+        $unwind: "$products"
+      },
+      {
+        $match:{
+          "products.status": "Delivered"
+        }
+      },
+      {
+        $group:{
+          _id: {$dateToString: {format: "%Y",date:"$date"}},
+          totalAmount: {$sum:"$products.subTotal"},
+          count:{$sum:1}
+        }
+      },
+      {
+        $sort: {_id:-1}
+      },
+      {
+        $limit: 7
+      }
+    ]).toArray()
+    resolve(dailySale)
+  })
+},
+
+
+
+
+
+getSubCatSales:()=>{
   return new Promise(async(resolve,reject)=>{
     let catSales = await db.get().collection(collections.ORDER_COLLECTION).aggregate([
       {
@@ -361,6 +426,57 @@ getCatSales:()=>{
           quantity:1,
           subTotal:1,
           category: "$orderedProducts.productSubcategory"
+        }
+      },
+      {
+        $group:{
+          _id: "$category",
+          totalAmount: {$sum:"$subTotal"},
+          count:{$sum:1}
+        }
+      }
+    ]).toArray()
+    resolve(catSales)
+  })
+},
+
+
+//.........................category sales........................
+
+getCatSales:()=>{
+  return new Promise(async(resolve,reject)=>{
+    let catSales = await db.get().collection(collections.ORDER_COLLECTION).aggregate([
+      {
+        $unwind: "$products"
+      },
+      {
+        $match:{
+          "products.status": "Delivered"
+        }
+      },
+      {
+        $project:{
+          item: "$products.item",
+          quantity: "$products.quantity",
+          subTotal: "$products.subTotal"
+        }
+      },
+      {
+        $lookup:{
+          from: collections.PRODUCT_COLLECTION,
+          localField: "item",
+          foreignField: "_id",
+          as: "orderedProducts"
+        }
+      },
+      {
+        $unwind: "$orderedProducts"
+      },
+      {
+        $project:{
+          quantity:1,
+          subTotal:1,
+          category: "$orderedProducts.productCategory"
         }
       },
       {

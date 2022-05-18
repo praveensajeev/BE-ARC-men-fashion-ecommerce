@@ -15,11 +15,8 @@ const adminData = {
 };
 /* GET admin dashboard. */
 router.get("/", verifyLogin,async function (req, res, next) {
-  res.header(
-    "Cache-Control",
-    "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
-  );
-    
+
+   
   let totalRevenue = await adminHelper.getRevenue()
   let deliveredOrders = await adminHelper.getDeliveredOrders()
   let totalProducts = await adminHelper.getTotalProducts()
@@ -51,12 +48,16 @@ router.get("/", verifyLogin,async function (req, res, next) {
 
 router.get('/getChartDates',async(req,res)=>{
   let dailySales = await adminHelper.getdailySales()
+  let subCatSales = await adminHelper.getSubCatSales()
   let catSales = await adminHelper.getCatSales()
   
   let dailyAmt = []
   let daysOfWeek = []
   let catSaleAmount = []
   let categoryName = []
+  let mainCatSaleAmount = []
+  let mainCategoryName = []
+
   
 
   // mapping daily sales amount
@@ -72,14 +73,19 @@ router.get('/getChartDates',async(req,res)=>{
 
 
   // mapping category name and category amount
-  catSales.map(cat=>{
+  subCatSales.map(cat=>{
     categoryName.push(cat._id)
     catSaleAmount.push(cat.totalAmount)
   })
 
+  catSales.map(cat=>{
+    mainCategoryName.push(cat._id)
+    mainCatSaleAmount.push(cat.totalAmount)
+  })
 
 
-  res.json({daysOfWeek,dailyAmt,categoryName,catSaleAmount})
+
+  res.json({daysOfWeek,dailyAmt,categoryName,catSaleAmount,mainCatSaleAmount,mainCategoryName})
 })
 
 
@@ -426,10 +432,7 @@ router.get("/find-subcategory", verifyLogin, function (req, res, next) {
 
 // View products
 router.get("/view-product", verifyLogin, function (req, res, next) {
-  res.header(
-    "Cache-Control",
-    "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
-  );
+
   productHelper.getAllProducts().then((response) => {
     if (response) {
       res.render("admin/view-products", {
@@ -466,32 +469,7 @@ router.post("/delete-product", verifyLogin, function (req, res, next) {
   });
 });
 
-// delete product variant
-// router.post("/delete-variant", verifyLogin, function (req, res, next) {
-//   productHelper.getOneProduct(req.body.id).then((result) => {
-//     productHelper.deleteProduct(req.body.id).then((response) => {
-//       if (response) {
-//         // To delete each product images
-//         for (i = 1; i <= 4; i++) {
-//           fs.unlink(
-//             `./public/images/product-images/${req.body.id}_${i}.webp`,
-//             (err) => {
-//               if (err) {
-//                 console.log(err);
-//               } else {
-//                 console.log("product image is deleted.");
-//               }
-//             }
-//           );
-//         }
-//         res.redirect("/admin/view-product");
-//       } else {
-//         console.log("Couldn't delete product images[no response]");
-//         res.redirect("/admin/view-product");
-//       }
-//     });
-//   });
-// });
+
 
 // get edit product page
 var productEditMsg;
@@ -600,32 +578,7 @@ router.post("/edit-product/", verifyLogin, function (req, res, next) {
   });
 });
 
-// // Add product variant
-// router.get("/add-variant/", verifyLogin, function (req, res, next) {
-//   productHelper.getOneProduct(req.query).then((result) => {
-//     if (result) {
-//       adminHelper.getBrand().then((allBrand) => {
-//         if (allBrand) {
-//           adminHelper.getCategory().then((allCategory) => {
-//             res.render("admin/add-variant", {
-//               title: "Add Variant",
-//               admin: true,
-//               header: "PRODUCT MANAGEMENT",
-//               productEditMsg,
-//               allCategory,
-//               allBrand,
-//               result,
-//               colours,
-//             });
-//           });
-//         }
-//       });
-//     } else {
-//       console.log("Couldn't get add product variant page[no result]");
-//       res.redirect("/admin/view-product");
-//     }
-//   });
-// });
+
 
 // Get view user page
 router.get("/view-users", verifyLogin, (req, res, next) => {
@@ -837,10 +790,7 @@ router.post("/delete-coupon", verifyLogin,async (req, res, next) => {
 
 // Get sales report
 router.get("/sales-report", verifyLogin,async (req, res, next) => {
-  res.header(
-    "Cache-Control",
-    "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
-  );
+
   let fromDate = new Date(req.query.fromDate)
   let tillDate = new Date(req.query.tillDate)
   let salesReport = await productHelper.getSalesReport(fromDate,tillDate)
@@ -854,10 +804,7 @@ router.get("/sales-report", verifyLogin,async (req, res, next) => {
 
 // Get stock report
 router.get("/stock-report", verifyLogin,async (req, res, next) => {
-  res.header(
-    "Cache-Control",
-    "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
-  );
+
   let stockReport = await productHelper.getStockReport()
   res.render("admin/stock-report", {
     title: "Sales Report",
@@ -868,22 +815,135 @@ router.get("/stock-report", verifyLogin,async (req, res, next) => {
 });
 
 
-// Get user report
-router.get("/user-report", verifyLogin,async (req, res, next) => {
 
-  res.header(
-    "Cache-Control",
-    "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
-  );
+
+
+
+
+router.get("/chart", verifyLogin,async function (req, res, next) {
+
+   
+  let totalRevenue = await adminHelper.getRevenue()
+  let deliveredOrders = await adminHelper.getDeliveredOrders()
+  let totalProducts = await adminHelper.getTotalProducts()
+  let totalUsers = await adminHelper.getTotalUsers()
+
+  let topSelling = await adminHelper.getTopSelling()
+  let stockOut = await adminHelper.getStockOut()
+
+
+  if(totalRevenue==undefined){
+    totalRevenue = 0
+  }
+
   
-  let userReport = await adminHelper.getUserReport()
 
-  res.render("admin/user-report", {
-    title: "User Report",
+  res.render("admin/add-category", {
+    title: "Admin",
     admin: true,
-    header: "USER REPORT",
-    userReport
+    header: "ADMIN DASHBOARD",
+    totalRevenue,
+    deliveredOrders,
+    totalProducts,
+    totalUsers,
+    topSelling,
+    stockOut
   });
+});
+
+
+
+
+
+router.get('/sales-chart',(req,res)=>{
+
+  res.render('admin/sales-chart',{admin:true})
+
+})
+
+
+
+
+
+
+// Get user report
+router.get("/getChartDatess", verifyLogin,async (req, res, next) => {
+
+  console.log("haiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+
+  let dailySales = await adminHelper.getdailySales()
+  let catSales = await adminHelper.getCatSales()
+  let monthlySales = await adminHelper.getMonthlySales()
+  let yearlySales = await adminHelper.getyearlySales()
+  
+  
+  let yearly = []
+  let yearlyAmt = []
+  let monthly = []
+  let monthlyAmt = []
+  let dailyAmt = []
+  let daysOfWeek = []
+  let catSaleAmount = []
+  let categoryName = []
+
+
+  // mapping daily sales amount
+  yearlySales.map(daily=>{
+    yearlyAmt.push(daily.totalAmount)
+  })
+
+
+  // mapping daily sales dates
+  monthlySales.map(daily=>{
+    yearly.push(daily._id) //Array of days in a week
+  })
+
+
+
+
+
+
+
+  // mapping daily sales amount
+  monthlySales.map(daily=>{
+    monthlyAmt.push(daily.totalAmount)
+  })
+
+
+  // mapping daily sales dates
+  monthlySales.map(daily=>{
+    monthly.push(daily._id) //Array of days in a week
+  })
+
+
+  
+
+  // mapping daily sales amount
+  dailySales.map(daily=>{
+    dailyAmt.push(daily.totalAmount)
+  })
+
+
+  // mapping daily sales dates
+  dailySales.map(daily=>{
+    daysOfWeek.push(daily._id) //Array of days in a week
+  })
+
+
+  // mapping category name and category amount
+  catSales.map(cat=>{
+    categoryName.push(cat._id)
+    catSaleAmount.push(cat.totalAmount)
+  })
+  console.log(dailyAmt,"this is a dailyAmt");
+  console.log(daysOfWeek,"this is a dailyAmt");
+  console.log(catSaleAmount,"this is a dailyAmt");
+  console.log(categoryName,"this is a dailyAmt");
+
+
+  res.json({daysOfWeek,dailyAmt,categoryName,catSaleAmount,monthly,monthlyAmt,yearly,yearlyAmt})
+
+
 });
 
 
