@@ -69,7 +69,7 @@
                     </div>
                     <div class="modal-body">
 
-                        <div class="mb-3">
+                        {{!-- <div class="mb-3">
                           <input
                             type="radio"
                             class="btn-check"
@@ -95,7 +95,7 @@
                             class="btn btn-outline-dark btn-sm ms-3"
                             for="officeAddress"
                           >Office</label>
-                        </div>
+                        </div> --}}
                         <div class="">
                           <label class="labels">Name</label><input
                             type="text"
@@ -405,10 +405,10 @@ function placeOrder(){
 
 function razorpayPayment(order){
 var options = {
-    "key": "rzp_test_GT3btMNJZ1MvHn", // Enter the Key ID generated from the Dashboard
+    "key": "rzp_test_aScLPZGnWnxvJB", // Enter the Key ID generated from the Dashboard
     "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
     "currency": "INR",
-    "name": "GadgetZone",
+    "name": "BE ARC MEN FASHION",
     "description": "Test Transaction",
     "image": "https://example.com/your_logo",
     "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1

@@ -646,8 +646,8 @@ router.get("/place-order", verifyBlock, async function (req, res, next) {
             payment_method: "paypal",
           },
           redirect_urls: {
-            return_url: "http://www.gadgetzone.site/success",
-            cancel_url: "http://www.gadgetzone.site/cancel",
+            return_url: "http://localhost:4000/success",
+            cancel_url: "http://localhost:4000/cancel",
           },
           transactions: [
             {
@@ -814,10 +814,7 @@ router.get("/place-order-buynow", verifyBlock, async function (req, res, next) {
 // if paypal is success
 var dollarTotal;
 router.get("/success", async (req, res) => {
-  res.header(
-    "Cache-Control",
-    "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
-  );
+ 
   const payerId = req.query.PayerID;
   const paymentId = req.query.paymentId;
   const execute_payment_json = {
