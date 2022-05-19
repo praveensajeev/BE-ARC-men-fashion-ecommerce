@@ -157,17 +157,18 @@ href="https://kit-pro.fontawesome.com/releases/v5.12.1/css/pro.min.css"
     <div class="row my-5">
          <div class="col-md-5">
             <h2>Category Wise Sales</h2>
-            <canvas id="categorySales" class='' width="200" height="200"></canvas>
+            <canvas id="subcategorySales" class='' width="200" height="200"></canvas>
         </div>
         <div class="col-md-2"></div>
         <div class="col-md-5">
             <h2>Subcategory Wise Sales</h2>
-            <canvas id="categorySales" class='' width="200" height="200"></canvas>
+            <canvas id="myChart3" class='' width="200" height="200"></canvas>
         </div>
+       
     </div>
     
 
-    <div class="row">
+    {{!-- <div class="row">
         <div class="col-md-6">
             <table class="table table-success table-hover" id="topSelling" style="box-shadow: 2px 3px 15px;">
                 <legend class="fs-2 fw-bold">Best Selling Products</legend>
@@ -210,7 +211,9 @@ href="https://kit-pro.fontawesome.com/releases/v5.12.1/css/pro.min.css"
                 </tbody>
             </table>
         </div>
-    </div>
+    </div> --}}
+
+
 
 
 
@@ -223,50 +226,7 @@ $( document ).ready(function() {
         success:async(chartDatas)=>{
             
 
-            const ctx3 = document.getElementById('categorySales').getContext('2d');
-            const myChart3 = new Chart(ctx3, {
-            type: 'pie',
-            data: {
-                labels: chartDatas.categoryName,
-                datasets: [{
-                    label: 'Category Wise Sales',
-                    data: chartDatas.catSaleAmount,
-                backgroundColor: [
-                    'rgba(255, 30, 100, 1)',
-                    'rgba(54, 100, 235, 1)',
-                    'rgba(255, 106, 86, 1)',
-                    'rgba(0, 192, 192, 1)',
-                    'rgba(153, 40, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        });
-
-        }
-    })
-
-})
-
-
-
-$( document ).ready(function() {
-    $.ajax({
-        url: '/admin/getChartDates',
-        method: 'get',
-        success:async(chartDatas)=>{
-            
-
-            const ctx3 = document.getElementById('categorySales').getContext('2d');
+            const ctx3 = document.getElementById('subcategorySales').getContext('2d');
             const myChart3 = new Chart(ctx3, {
             type: 'pie',
             data: {
@@ -275,7 +235,7 @@ $( document ).ready(function() {
                     label: 'Category Wise Sales',
                     data: chartDatas.mainCatSaleAmount,
                 backgroundColor: [
-                    'rgba(255, 30, 100, 1)',
+                    'rgba(25, 30, 100, 1)',
                     'rgba(54, 100, 235, 1)',
                     'rgba(255, 106, 86, 1)',
                     'rgba(0, 192, 192, 1)',
@@ -283,7 +243,7 @@ $( document ).ready(function() {
                     'rgba(255, 159, 64, 1)'
                 ],
                 borderColor: [
-                    'rgba(255, 99, 132, 1)',
+                    'rgba(25, 99, 132, 1)',
                     'rgba(54, 162, 235, 1)',
                     'rgba(255, 206, 86, 1)',
                     'rgba(75, 192, 192, 1)',
@@ -301,4 +261,60 @@ $( document ).ready(function() {
 })
 
 
+
+
+</script>
+
+
+
+
+<script>
+    $( document ).ready(function() {
+    $.ajax({
+        url: '/admin/getChartDates',
+        method: 'get',
+        success:async(chartDatas)=>{
+            const ctx = document.getElementById('myChart3').getContext('2d');
+            const myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: chartDatas.categoryName,
+                    datasets: [{
+                        label: 'Sub category sales',
+                        data: chartDatas.catSaleAmount,
+                        backgroundColor: [
+                              'rgba(255, 30, 100, 1)',
+                    'rgba(54, 100, 235, 1)',
+                    'rgba(255, 106, 86, 1)',
+                    'rgba(0, 192, 192, 1)',
+                    'rgba(153, 40, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                        ],
+                        borderColor: [
+                            'rgba(40, 100, 255, 1)',
+                             'rgba(255, 99, 132, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)' 
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            
+                        },
+                    }
+                }
+            });
+
+           
+
+        }
+    })
+
+})
 </script>

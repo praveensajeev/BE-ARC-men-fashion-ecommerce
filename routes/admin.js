@@ -50,6 +50,10 @@ router.get('/getChartDates',async(req,res)=>{
   let dailySales = await adminHelper.getdailySales()
   let subCatSales = await adminHelper.getSubCatSales()
   let catSales = await adminHelper.getCatSales()
+
+  console.log(catSales,"this is catsaleeeeeeeeeeeeeeeeee");
+
+  console.log(subCatSales,"this haiiiiiiiiiiiiiiiiiiiiiii eeeee");
   
   let dailyAmt = []
   let daysOfWeek = []
@@ -82,6 +86,8 @@ router.get('/getChartDates',async(req,res)=>{
     mainCategoryName.push(cat._id)
     mainCatSaleAmount.push(cat.totalAmount)
   })
+console.log(mainCatSaleAmount,"dhdhdhdhdgdg");
+console.log(mainCategoryName,"dhdhdhdhdgdg");
 
 
 
@@ -841,7 +847,7 @@ router.get("/chart", verifyLogin,async function (req, res, next) {
   res.render("admin/add-category", {
     title: "Admin",
     admin: true,
-    header: "ADMIN DASHBOARD",
+    header: "SALES REPORT",
     totalRevenue,
     deliveredOrders,
     totalProducts,
@@ -857,7 +863,7 @@ router.get("/chart", verifyLogin,async function (req, res, next) {
 
 router.get('/sales-chart',(req,res)=>{
 
-  res.render('admin/sales-chart',{admin:true})
+  res.render('admin/sales-chart',{admin:true,header: "SALES REPORT"})
 
 })
 

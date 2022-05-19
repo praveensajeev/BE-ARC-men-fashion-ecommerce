@@ -579,18 +579,25 @@ module.exports = {
   },
 
 
-  verifyPayment:(details)=>{
-    return new Promise((resolve,reject)=>{
-      const crypto = require('crypto')
-      var hmac = crypto.createHmac('sha256',process.env.raz_key_secret)
-      hmac.update(details['payment[razorpay_order_id]']+'|'+details['payment[razorpay_payment_id]']);
-      hmac = hmac.digest('hex')
-      if(hmac==details['payment[razorpay_signature]']){
-        resolve()
-      }else{
-        reject()
+  verifyPayment: (details) => {
+    console.log(details);
+    return new Promise((resolve, reject) => {
+      const crypto = require("crypto");
+      let hmac = crypto.createHmac("sha256", "lcaGOMaRalCTNEtBsNtQBGVj");
+
+      hmac.update(
+        details["payment[razorpay_order_id]"] +
+          "|" +
+          details["payment[razorpay_payment_id]"]
+      );
+      hmac = hmac.digest("hex");
+      console.log(hmac);
+      if (hmac == details["payment[razorpay_signature]"]) {
+        resolve();
+      } else {
+        reject();
       }
-    })
+    });
   },
 
   
@@ -983,6 +990,20 @@ module.exports = {
       resolve(relatedpro);
     });
   },
+
+
+//........................referal..............................
+
+checkReferal: (referal) => {
+  return new Promise(async (res, rej) => {
+    let refer = await db.get().collection(collections.USER_COLLECTION).find({ refer: referal }).toArray();
+    if(refer){
+        res(refer)
+    }else{
+        res(err)
+    }
+  });
+}
 
 
  

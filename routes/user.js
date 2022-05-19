@@ -4,6 +4,8 @@ const productHelper = require("../helpers/product-helper");
 var router = express.Router();
 var userHelper = require("../helpers/user-helpers");
 
+const createReferal = require('referral-code-generator')
+
 const paypal = require("paypal-rest-sdk");
 
 paypal.configure({
@@ -20,7 +22,7 @@ var objectId = require("mongodb").ObjectId;
 
 const serviceSsid = "VAb49fda30790e3f3893352a435ce76489";
 const AccountSsid = "ACff888844055bc1ae19c33644233f6f2d";
-const token = "558c25ba27a42a70a0ca0a99e05d18cd";
+const token = "17fed9b85113577ebdf5498e93b20e5b";
 const client = require("twilio")(AccountSsid, token);
 
 /* GET home page. */
@@ -92,10 +94,10 @@ function verifyBlock(req, res, next) {
 }
 
 //............................. signup begin.........................
-router.get("/signup", (req, res, next) => {
-
+router.get("/signup",async (req, res, next) => {
+  let refer = (await req.query.refer) ? req.query.refer : null;
   if (!req.session?.user?.loggedIn) {
-    res.render("signup", { title: "BR ARC" });
+    res.render("signup", { title: "BR ARC",refer});
   } else {
     res.redirect("/");
   }
@@ -104,6 +106,18 @@ router.get("/signup", (req, res, next) => {
 //......................... signup...............................
 var userSignup;
 router.post("/signup", (req, res, next) => {
+
+
+  let refer = createReferal.alphaNumeric("uppercase", 2, 3);
+  req.body.refer = refer;
+  if (req.body.referedBy != "") {
+    userHelper
+      .checkReferal(req.body.referedBy)
+      .then((data) => {
+        req.body.referedBy = data[0]._id;
+        req.body.wallet = 100;
+  
+  
   userHelper.userCheck(req.body).then((ress) => {
     let errorMsg = ress.msg;
     if (ress.userExist) {
@@ -124,6 +138,33 @@ router.post("/signup", (req, res, next) => {
         });
     }
   });
+
+      }).catch(()=>{
+        req.session.referErr = "sorry no such code excist";
+        res.redirect("/signup")
+      })
+}else{
+  userHelper.userCheck(req.body).then((ress) => {
+    let errorMsg = ress.msg;
+    if (ress.userExist) {
+      res.render("signup", { errorMsg });
+    } else {
+      userSignup = req.body;
+
+      //................ OTP  sending ...............................
+      client.verify
+        .services(serviceSsid)
+        .verifications.create({
+          to: `+91${req.body.phone}`,
+          channel: "sms",
+        })
+        .then((ress) => {
+          let signupPhone = req.body.phone;
+          res.render("signupOtp", { signupPhone });
+        });
+    }
+  });
+}
 });
 
 //......................... login request user..........................
@@ -759,15 +800,15 @@ router.get("/place-order-buynow", verifyBlock, async function (req, res, next) {
             payment_method: "paypal",
           },
           redirect_urls: {
-            return_url: "http://www.gadgetzone.site/success",
-            cancel_url: "http://www.gadgetzone.site/cancel",
+            return_url: "http://localhost:4000/success",
+            cancel_url: "http://localhost:4000/cancel",
           },
           transactions: [
             {
               item_list: {
                 items: [
                   {
-                    name: "GadgetZone",
+                    name: "BE ARC MEN FASHION",
                     sku: "1212",
                     price: dollarTotal,
                     currency: "USD",
@@ -779,7 +820,7 @@ router.get("/place-order-buynow", verifyBlock, async function (req, res, next) {
                 currency: "USD",
                 total: dollarTotal,
               },
-              description: "Thanks for shopping with GadgetZone",
+              description: "Thanks for shopping with BE ARC MEN FASHION",
             },
           ],
         };
@@ -949,6 +990,8 @@ var profileMsg;
 router.get("/user-profile", verifyBlock, async function (req, res, next) {
 
   let user = await userHelper.getOneUser(req.session.user._id);
+  let refer = req.session.user.refer;
+  let referalLink = "localhost:4000/signup?refer=" + refer;
   console.log(user,"praveen");
   
     res.render("user-profile", {
@@ -957,6 +1000,7 @@ router.get("/user-profile", verifyBlock, async function (req, res, next) {
       profileMsg,
       cartCount,
       changePassMsg,
+      referalLink
     });
     profileMsg = null;
     changePassMsg = null;

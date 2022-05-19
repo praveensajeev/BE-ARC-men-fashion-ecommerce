@@ -444,6 +444,7 @@ getSubCatSales:()=>{
 //.........................category sales........................
 
 getCatSales:()=>{
+  console.log("haiiiiiiiiiiiiiiiii");
   return new Promise(async(resolve,reject)=>{
     let catSales = await db.get().collection(collections.ORDER_COLLECTION).aggregate([
       {

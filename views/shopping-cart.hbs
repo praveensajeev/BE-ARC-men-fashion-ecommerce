@@ -23,13 +23,16 @@
       {{#if cartMsg}}
       <div class="col-md-6 text-center centered">
         <div class="card">
-          <div class="card-header bg-warning" style="border-radius: 30px 30px 0px 0px;">
-               <i class="fas fa-cart-arrow-down my-2 fs-2"></i>
+          
+          <div class="card-body  text-dark" style="border-radius: 10px 10px 30px 30px;">
+           
+           <img src="/img/icon/no-orders-found@3x 1.png" alt="">
+           <div>
+             <h2 class="text-dark">{{cartMsg}}</h2>
+           </div>
+           
           </div>
-          <div class="card-body bg-dark text-white" style="border-radius: 0px 0px 30px 30px;">
-            <h2 class="card-title mt-4">{{cartMsg}}</h2>
-            <a href="/" class="btn btn-light text-dark my-4">Continue Shopping</a>
-          </div>
+           <a href="/" class="btn btn-primary text-dark my-4">Continue Shopping</a>
         </div>
       </div>
         {{else}}
