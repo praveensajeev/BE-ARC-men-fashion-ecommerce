@@ -566,6 +566,28 @@ module.exports = {
       })
     },
 
+// ==========================================checkingWallet=====================
+checkWallet:(cash,userId)=>{
+  return new Promise(async(resolve,reject)=>{
+  let walletExist = await db.
+  get().collection(collections.USER_COLLECTION)
+  .findOne({_id:objectId(userId),walletAmount: { $exists: true }})
+  if(walletExist.walletAmount>cash>0){
+   
+      resolve({status: true,cash})
+  
+  }
+  else {
+    console.log("amount is here producthelpers.653");
+
+    resolve({status:false})
+  }
+  })
+},
+
+
+
+
     checkCouponOffer:(code,userId)=>{
       return new Promise(async(resolve,reject)=>{
       let couponExist = await db.get().collection(collections.COUPON_OFFER).findOne({couponCode: code})

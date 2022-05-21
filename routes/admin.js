@@ -757,10 +757,7 @@ router.post("/delete-category-offer", verifyLogin,async (req, res, next) => {
 
 // Get coupon offer management page
 router.get("/coupon-offer", verifyLogin,async (req, res, next) => {
-  res.header(
-    "Cache-Control",
-    "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
-  );
+  
   let couponList = await productHelper.getCouponOffer()
   res.render("admin/coupon-offer", {
     title: "Coupon Management",

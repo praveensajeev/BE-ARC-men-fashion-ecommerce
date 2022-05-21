@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 var objectId = require("mongodb").ObjectId;
 
 
-
+let referralCodeGenerator = require('referral-code-generator')
 const Razorpay = require("razorpay");
 
 const productHelper = require("./product-helper");
@@ -19,17 +19,45 @@ module.exports = {
   // Add user data to Database
   addUser: (userData) => {
     return new Promise(async (resolve, reject) => {
+
+      if(userData.referel){
       userData.password = await bcrypt.hash(userData.password, 10);
+      userData.confirmPass = await bcrypt.hash(userData.password, 10);
       let today = Date(Date.now());
       let date = today.toString();
+      referel=referralCodeGenerator.alphaNumeric('uppercase', 2, 3)
       userData.date = date;
-      console.log(userData.date,"haii datee");
+      userData.referel=referel;
+      userData.walletAmount=100;
+      
       db.get()
         .collection(collections.USER_COLLECTION)
         .insertOne(userData)
         .then((data) => {
-          resolve({ status: true });
+          resolve({ status: true,data });
         });
+        
+      }else{
+
+        userData.password = await bcrypt.hash(userData.password, 10);
+      userData.confirmPass = await bcrypt.hash(userData.password, 10);
+      let today = Date(Date.now());
+      let date = today.toString();
+      referel=referralCodeGenerator.alphaNumeric('uppercase', 2, 3)
+      userData.date = date;
+      userData.referel=referel;
+      
+      
+      db.get()
+        .collection(collections.USER_COLLECTION)
+        .insertOne(userData)
+        .then((data) => {
+          resolve({ status: true,data });
+        });
+        
+
+      }
+      
     });
   },
 
@@ -994,16 +1022,63 @@ module.exports = {
 
 //........................referal..............................
 
-checkReferal: (referal) => {
-  return new Promise(async (res, rej) => {
-    let refer = await db.get().collection(collections.USER_COLLECTION).find({ refer: referal }).toArray();
-    if(refer){
-        res(refer)
-    }else{
-        res(err)
-    }
-  });
-}
+verifyReferel:(id)=>{
+  return new Promise(async (resolve, reject) => {
+   let Arun= await db.get().collection(collections.USER_COLLECTION).find({referel:id}).toArray()
+   if (Arun) {
+    resolve({
+      userIs: true,
+      msg: "User with this referel id is not exist",
+    });
+  } else {
+    resolve({ useris: false });
+  }
+
+  })
+
+},
+
+
+
+wallet:(id,user,Amount)=>{
+  return new Promise(async(resolve,reject)=>{
+
+    let WalletExist= await db.get().collection(collections.USER_COLLECTION).find({referel:id,walletAmount: { $exists: true }}).toArray()
+if(WalletExist[0].walletAmount){
+  TotalAmount=WalletExist[0].walletAmount+Amount
+  // console.log(WalletExist,"WalletAmount uSer-helper59");
+  await db.get().collection(collections.USER_COLLECTION).updateOne({referel:id},{
+    
+    $push: {
+      yourReferels: {user},
+    },
+    $set:{
+      walletAmount:TotalAmount
+
+    },
+  
+})
+
+}else{
+   
+  await db.get().collection(collections.USER_COLLECTION).updateOne({referel:id},{
+    
+      $push: {
+        yourReferels: {user},
+      },
+      $set:{
+        walletAmount:Amount
+
+      },
+    
+  })}
+resolve()
+})
+
+},
+
+
+
 
 
  

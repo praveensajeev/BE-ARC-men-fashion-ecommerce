@@ -22,7 +22,7 @@ var objectId = require("mongodb").ObjectId;
 
 const serviceSsid = "VAb49fda30790e3f3893352a435ce76489";
 const AccountSsid = "ACff888844055bc1ae19c33644233f6f2d";
-const token = "17fed9b85113577ebdf5498e93b20e5b";
+const token = "0a3e80cd0fa5219214c79f299c5bf0c2";
 const client = require("twilio")(AccountSsid, token);
 
 /* GET home page. */
@@ -94,10 +94,11 @@ function verifyBlock(req, res, next) {
 }
 
 //............................. signup begin.........................
+let referel;
 router.get("/signup",async (req, res, next) => {
-  let refer = (await req.query.refer) ? req.query.refer : null;
+  let referel = await req.query.referel
   if (!req.session?.user?.loggedIn) {
-    res.render("signup", { title: "BR ARC",refer});
+    res.render("signup", { title: "BR ARC",referel});
   } else {
     res.redirect("/");
   }
@@ -105,27 +106,21 @@ router.get("/signup",async (req, res, next) => {
 
 //......................... signup...............................
 var userSignup;
-router.post("/signup", (req, res, next) => {
+router.post("/signup",async (req, res, next) => {
+  refereUser=req.body.referedBy
+  userHelper.verifyReferel(req.body.referedBy).then((resss)=> {
+   
+    if(resss.userIs){
+      userHelper.userCheck(req.body).then((ress)=>{
+        let errorMsg = ress.msg;
+        if (ress.userExist) {
+          res.render("signup", { errorMsg });
+        } else {
+          
+          
+          userSignup = req.body;
 
-
-  let refer = createReferal.alphaNumeric("uppercase", 2, 3);
-  req.body.refer = refer;
-  if (req.body.referedBy != "") {
-    userHelper
-      .checkReferal(req.body.referedBy)
-      .then((data) => {
-        req.body.referedBy = data[0]._id;
-        req.body.wallet = 100;
-  
-  
-  userHelper.userCheck(req.body).then((ress) => {
-    let errorMsg = ress.msg;
-    if (ress.userExist) {
-      res.render("signup", { errorMsg });
-    } else {
-      userSignup = req.body;
-
-      //................ OTP  sending ...............................
+      //============================= sent OTP==============================
       client.verify
         .services(serviceSsid)
         .verifications.create({
@@ -134,39 +129,18 @@ router.post("/signup", (req, res, next) => {
         })
         .then((ress) => {
           let signupPhone = req.body.phone;
-          res.render("signupOtp", { signupPhone });
+          res.render("signupOtp", { signupPhone,refereUser});
         });
-    }
-  });
-
-      }).catch(()=>{
-        req.session.referErr = "sorry no such code excist";
-        res.redirect("/signup")
+      }
       })
-}else{
-  userHelper.userCheck(req.body).then((ress) => {
-    let errorMsg = ress.msg;
-    if (ress.userExist) {
+    }else{
+      let errorMsg = resss.msg;
       res.render("signup", { errorMsg });
-    } else {
-      userSignup = req.body;
 
-      //................ OTP  sending ...............................
-      client.verify
-        .services(serviceSsid)
-        .verifications.create({
-          to: `+91${req.body.phone}`,
-          channel: "sms",
-        })
-        .then((ress) => {
-          let signupPhone = req.body.phone;
-          res.render("signupOtp", { signupPhone });
-        });
     }
-  });
-}
+  }
+  );
 });
-
 //......................... login request user..........................
 var blockMsg;
 router.get("/login", (req, res, next) => {
@@ -364,10 +338,15 @@ router.post("/reset-pass", (req, res, next) => {
 
 // SignupOTP GET CHECK OTP and verify
 var signupSuccess;
-router.get("/signupOtp", (req, res) => {
-
+router.get("/signupOtp",async (req, res) => {
+  
   let phoneNumber = req.query.phonenumber;
   let otpNumber = req.query.otpnumber;
+  let referedBy= req.query.referedby;
+ 
+  
+
+
   client.verify
     .services(serviceSsid)
     .verificationChecks.create({
@@ -376,11 +355,25 @@ router.get("/signupOtp", (req, res) => {
     })
     .then((resp) => {
       if (resp.valid) {
+
         userHelper.addUser(userSignup).then((response) => {
+          let newuser=response.data.insertedId
           if (response.status) {
-            let valid = true;
-            signupSuccess = "You have Successfully signed up";
-            res.send(valid);
+            if(referedBy){
+              let Amount=100;
+              userHelper.wallet(referedBy,newuser,Amount).then(()=>{
+
+              let valid = true;
+              signupSuccess = "Welcome and Happy Shopping, Signup Success and ₹100 Added to your Wallet";
+              res.send(valid); })
+              
+            }else{
+              let valid = true;
+              signupSuccess = "Welcome and Happy Shopping, Signup Success";
+              res.send(valid); 
+              
+            }
+            
           } else {
             let valid = false;
             res.send(valid);
@@ -577,6 +570,23 @@ router.post("/check-coupon", verifyLogin,async (req, res, next) => {
       let isUsed = true
       res.json({isUsed})
     }
+    else{
+      resp = false
+      res.json(resp)
+    }
+  })
+});
+
+// ===========================WalletAMount==================================
+var couponMsg
+router.post("/check-wallet", verifyLogin,async (req, res, next) => {
+  await productHelper.checkWallet(req.body.code,req.session.user._id).then((resp)=>{
+    console.log(resp.cash,"user.js599");
+    req.session.amount=resp.cash
+    if(resp.status){
+      res.json(resp)
+    }
+   
     else{
       resp = false
       res.json(resp)

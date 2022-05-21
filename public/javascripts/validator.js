@@ -195,7 +195,7 @@ userSignup.validate({
   rules: {
     firstName: {
       required: true,
-      minlength: 5,
+      minlength: 3,
     },
     lastName: {
       required: true,
