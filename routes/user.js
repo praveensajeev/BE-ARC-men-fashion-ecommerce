@@ -8,10 +8,14 @@ const createReferal = require('referral-code-generator')
 
 const paypal = require("paypal-rest-sdk");
 
+// setting ENV 
+require('dotenv').config();
+
+
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
-  'client_id': 'AQiCJLhkXxJ0h6HGTZWFCfJxdXTUjBYqyaQDH8ZqC1NNIEn3a5MN4c2IbHVCUpqdZe2vz2G_dVLi48m6',
-  'client_secret': 'EDChw5_w8gj9Tpb2U8oI5uVyTxPJiuHO7SBeQFY_4vI5IFNijB0B24HCsy2Y9xlIv5tlPYybN1v6TyCH'
+  'client_id': process.env.PAYPAL_CLIENTID,
+  'client_secret': process.env.PAYPAL_CLIENTIDSECRET
 });
 
 var objectId = require("mongodb").ObjectId;
@@ -20,9 +24,9 @@ var objectId = require("mongodb").ObjectId;
 
 // twilio API
 
-const serviceSsid = "VAb49fda30790e3f3893352a435ce76489";
-const AccountSsid = "ACff888844055bc1ae19c33644233f6f2d";
-const token = "0a3e80cd0fa5219214c79f299c5bf0c2";
+const serviceSsid = process.env.TWILIO_SERVICESID;
+const AccountSsid = process.env.TWILIO_ACCSID;
+const token = process.env.TWILIO_AUTHTOKEN;
 const client = require("twilio")(AccountSsid, token);
 
 /* GET home page. */

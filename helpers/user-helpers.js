@@ -2,6 +2,9 @@ var db = require("../config/connection");
 var collections = require("../config/constants");
 const bcrypt = require("bcrypt");
 var objectId = require("mongodb").ObjectId;
+// setting ENV 
+require('dotenv').config();
+
 
 
 let referralCodeGenerator = require('referral-code-generator')
@@ -10,8 +13,8 @@ const Razorpay = require("razorpay");
 const productHelper = require("./product-helper");
 
 var instance = new Razorpay({
-  key_id: 'rzp_test_aScLPZGnWnxvJB',
-  key_secret: 'lcaGOMaRalCTNEtBsNtQBGVj',
+  key_id: process.env.RAZORPAY_KEYID,
+  key_secret: process.env.RAZORPAY_KEYSECRET,
 });
 
 
@@ -611,7 +614,7 @@ module.exports = {
     console.log(details);
     return new Promise((resolve, reject) => {
       const crypto = require("crypto");
-      let hmac = crypto.createHmac("sha256", "lcaGOMaRalCTNEtBsNtQBGVj");
+      let hmac = crypto.createHmac("sha256", process.env.RAZORPAY_KEYSECRET);
 
       hmac.update(
         details["payment[razorpay_order_id]"] +
