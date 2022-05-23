@@ -2,10 +2,9 @@ var db = require("../config/connection");
 var collections = require("../config/constants");
 const bcrypt = require("bcrypt");
 var objectId = require("mongodb").ObjectId;
+
 // setting ENV 
 require('dotenv').config();
-
-
 
 let referralCodeGenerator = require('referral-code-generator')
 const Razorpay = require("razorpay");
@@ -13,7 +12,7 @@ const Razorpay = require("razorpay");
 const productHelper = require("./product-helper");
 
 var instance = new Razorpay({
-  key_id: process.env.RAZORPAY_KEYID,
+  key_id:process.env.RAZORPAY_KEYID,
   key_secret: process.env.RAZORPAY_KEYSECRET,
 });
 

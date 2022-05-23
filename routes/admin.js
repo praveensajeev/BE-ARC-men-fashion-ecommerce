@@ -4,15 +4,15 @@ var session = require("express-session");
 const adminHelper = require("../helpers/admin-helper");
 const productHelper = require("../helpers/product-helper");
 
-
+require('dotenv').config();
 
 // file system
 const fs = require("fs");
 const { response, json } = require("express");
 
 const adminData = {
-  email:"praveen@gmail.com",
-  pass: "12345",
+  email:process.env.ADMIN_MAIL,
+  pass: process.env.ADMIN_PASS,
 };
 /* GET admin dashboard. */
 router.get("/", verifyLogin,async function (req, res, next) {
