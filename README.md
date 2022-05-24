@@ -1,11 +1,10 @@
-# GadgetZone
+# GRAVITY MEN FASHION
 
-As a part of my self-learning this is my first project. An online shopping site for Gadgets and accessories. 
-Because of my keen interest in tech gadgets and accessories, I make the app much user-friendly and responsive. 
-<br>
-Check it out:   http://gadgetzone.site/
-<br>
-<br>
+As a part of my self-learning this is my first project. An online shopping site for MEN FASHION and accessories. 
+this is a website is responsive and attractive and userfriendly
+
+You can Check :   https://mengravity.shop/
+
 Technologies Used: <br>
   > NodeJS <br>
   > ExpressJS <br>
@@ -48,6 +47,7 @@ User: <br>
   > User can see special offers on particular item and directly buy by clicking on the item <br>
   > User can add reviews about purchased product <br>
   > User can track and manage orders they placed <br>
+  > User can also get referel offer and wallet money<br>
 <br>
 Admin: <br>
 <br>
