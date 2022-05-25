@@ -697,15 +697,15 @@ router.get("/place-order", verifyBlock, async function (req, res, next) {
             payment_method: "paypal",
           },
           redirect_urls: {
-            return_url: "http://localhost:4000/success",
-            cancel_url: "http://localhost:4000/cancel",
+            return_url: "http://mengravity.shop/success",
+            cancel_url: "http://mengravity.shop/cancel",
           },
           transactions: [
             {
               item_list: {
                 items: [
                   {
-                    name: "BE ARC",
+                    name: "GRAVITY",
                     sku: "1212",
                     price: dollarTotal,
                     currency: "USD",
@@ -717,7 +717,7 @@ router.get("/place-order", verifyBlock, async function (req, res, next) {
                 currency: "USD",
                 total: dollarTotal,
               },
-              description: "Thanks for shopping with BE ARC men fashion",
+              description: "Thanks for shopping with GRAVITY men fashion",
             },
           ],
         };
@@ -810,15 +810,15 @@ router.get("/place-order-buynow", verifyBlock, async function (req, res, next) {
             payment_method: "paypal",
           },
           redirect_urls: {
-            return_url: "http://localhost:4000/success",
-            cancel_url: "http://localhost:4000/cancel",
+            return_url: "http://mengravity.shop/success",
+            cancel_url: "http://mengravity.shop/cancel",
           },
           transactions: [
             {
               item_list: {
                 items: [
                   {
-                    name: "BE ARC MEN FASHION",
+                    name: "GRAVITY MEN FASHION",
                     sku: "1212",
                     price: dollarTotal,
                     currency: "USD",
@@ -830,7 +830,7 @@ router.get("/place-order-buynow", verifyBlock, async function (req, res, next) {
                 currency: "USD",
                 total: dollarTotal,
               },
-              description: "Thanks for shopping with BE ARC MEN FASHION",
+              description: "Thanks for shopping with GRAVITY MEN FASHION",
             },
           ],
         };
@@ -1001,7 +1001,7 @@ router.get("/user-profile", verifyBlock, async function (req, res, next) {
 
   let user = await userHelper.getOneUser(req.session.user._id);
   let refer = req.session.user.refer;
-  let referalLink = "localhost:4000/signup?refer=" + refer;
+  let referalLink = "mengravity.shop/signup?refer=" + refer;
   console.log(user,"praveen");
   
     res.render("user-profile", {
