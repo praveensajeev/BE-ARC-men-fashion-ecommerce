@@ -6,6 +6,10 @@
 
 <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
 
+<script src="https://unpkg.com/easyinvoice/dist/easyinvoice.min.js"></script>
+
+ <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+
 <div class="container bootdey my-5" style="background-color:#ffff ;">
     <div class="panel panel-default panel-order mt-5" style="background-color: rgb(255, 255, 255);">
         <div class="panel-heading">
@@ -25,6 +29,7 @@
                                 {{else}}
                                     <div class="pull-right"><label class="label label-success">{{this.status}}</label></div>
                                 {{/if}}
+                                
                                 <span><strong>{{this.product.productName}}</strong></span> <br />
                                 <span>
                                     Quantity : {{this.quantity}}
@@ -48,6 +53,7 @@
                                 {{else}}
                                     {{#if this.delivered}}
                                      <a data-placement="top" class="btn btn-primary btn-xs glyphicon glyphicon-trash" onclick="cancelOrder('{{this._id}}','{{this.product._id}}')" title="Danger">Return</a>
+                                     <a href="/view-invoice/{{this._id}}" data-placement="top" class="btn btn-success btn-xs" >Download Invoice</a>
                                     
                                 {{else}}
 
@@ -80,6 +86,39 @@
 </div>
 
 <script>
+ function invoice(id,total){ 
+       swal({
+        title: "Are you sure to cancel this product ?",
+        icon: 'warning',
+        buttons: true,
+        dangerMode:true,
+    }).then((willCancel)=>{
+        if(willCancel){
+            $.ajax({
+                url: '/view-invoice',
+                data: {
+                    orderId:id,
+                },
+                method: 'post',
+                success:(resp)=>{
+                    if(resp.status){
+                        swal({
+                            title: "Success!",
+                            text: "Ordered Cancelled Successfully",
+                            icon: "success",
+                        }).then(()=>{
+                            location.href = '/my-orders'
+                        })
+                    }
+                }
+            })
+        }
+    })
+   
+  }
+
+
+
     function cancelOrder(orderId,proId){
         swal({
         title: "Are you sure to cancel this product ?",
@@ -111,6 +150,8 @@
     })
     }
 </script>
+
+
 
 <style>
 

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    
+
+    <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Maven+Pro&display=swap');
+
+        body {
+            font-family: 'Maven Pro', sans-serif;
+            background-color: #2f2e2e
+        }
+
+        hr {
+            color: #0000004f;
+            margin-top: 5px;
+            margin-bottom: 5px
+        }
+
+        .add td {
+            color: #000000;
+            text-transform: uppercase;
+            font-size: 12px
+        }
+
+        .content {
+            font-size: 14px
+        }
+       
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5 mb-3" id="invoice" style="height: 90vh;">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="d-flex flex-row p-2"> 
+                        <div class="d-flex flex-column"> <span class="font-weight-bold"> INVOICE</span>
+                            <small>{{products.dateISO}}</small> </div>
+                    </div>
+                    <hr>
+                    <div class="table-responsive p-2">
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr class="add">
+                                    <td>To</td>
+                                    <td>From</td>
+                                </tr>
+                                <tr class="content">
+                                    <td class="font-weight-bold">{{products.deliveryDetails.name}} <br>{{products.deliveryDetails.phone}} <br>{{products.deliveryDetails.streetAddress}}</td>
+                                    <td class="font-weight-bold">Gravity <br> Men fashion <br>INDIA</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <hr>
+                    <div class="products p-2">
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr class="add">
+                                    <td>Product Name</td>
+                                    <td>Quantity</td>
+                                    <td>Payment method</td>
+                                    <td class="text-center">Total</td>
+                                </tr>
+                                <tr class="content">
+                                    <td>{{products.product.productName}}</td>
+                                    <td>{{products.quantity}}</td>
+                                    <td>{{products.paymentMethod}}</td>
+                                    <td class="text-center">${{products.subTotal}}</td>
+                                </tr>
+                               
+                            </tbody>
+                        </table>
+                    </div>
+                    <hr>
+                    <div class="products p-2">
+                        <table class="table table-borderless">
+                            <tbody>
+                            
+                            </tbody>
+                        </table>
+                    </div>
+                    <hr>
+                    <div class="address p-2">
+                        <table class="table table-borderless">
+                            <tbody>
+                               
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                  
+                   </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-5" style="align-items: center; margin-left:50rem" >
+         <button class="btn btn-primary" id="downloadPdf"> Invoice</button>
+    </div>
+    </div>
+    
+    
+</body>
+<script>
+    document
+        .getElementById("downloadPdf")
+        .addEventListener("click", function download() {
+            const element = document.getElementById("invoice");
+            html2pdf()
+                .from(element)
+                .save();
+        });
+</script>
+
+</html>

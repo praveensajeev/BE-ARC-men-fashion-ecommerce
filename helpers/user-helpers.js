@@ -10,6 +10,7 @@ let referralCodeGenerator = require('referral-code-generator')
 const Razorpay = require("razorpay");
 
 const productHelper = require("./product-helper");
+const { resolve } = require("path");
 
 var instance = new Razorpay({
   key_id:process.env.RAZORPAY_KEYID,
@@ -1078,11 +1079,98 @@ resolve()
 })
 
 },
+getorderdetails:(id)=>{
+  console.log("kjhgfghioiuytrtyui");
+    return new Promise(async(resolve,reject)=>{
+      let allOrders = await db.get().collection(collections.ORDER_COLLECTION).aggregate([
+        {
+          $match:{
+            _id: objectId(id)
+          }
+        },
+        {
+          $unwind: "$products"
+        },
+        {
+          $project:{
+            item: "$products.item",
+            quantity: "$products.quantity",
+            subTotal: "$products.subTotal",
+            status: "$products.status",
+            cancelled: "$products.cancelled",
+            delivered: "$products.delivered",
+            dateISO: "$dateISO",
+            date: "$date",
+            paymentMethod: "$paymentMethod",
+            deliveryDetails: "$deliveryDetails"
+          }
+        },
+        {
+          $lookup:{
+            from: collections.PRODUCT_COLLECTION,
+            localField: "item",
+            foreignField: "_id",
+            as: "products"
+          }
+        },
+        {
+          $project:{
+            item:1,
+            quantity:1,
+            subTotal:1,
+            status:1,
+            dateISO:1,
+            date:1,
+            deliveryDetails:1,
+            cancelled:1,
+            delivered:1,
+            paymentMethod:1,
+            product: {
+              $arrayElemAt: ["$products",0]
+            }
+          }
+        },
+        {
+          $unwind: "$product.productVariants"
+        },
+        {
+          $sort:{date: -1}
+        }
+      ]).toArray()
+      console.log("aaaaaaa",allOrders);
+      resolve(allOrders)
+    })
+  },
+  updateprofileWallet:(id,total)=>{
+    console.log("hhh",id,total);
+    return new Promise((resolve,reject)=>{
+      db.get().collection(collections.USER_COLLECTION).updateOne({_id:objectId(id)},{
+        $inc:{
+          wallet:total
+        }
+      }).then((resp)=>{
+        console.log(resp);
+        resolve(resp)
+      })
+    })
+  }
+}
 
 
+//.................get user invoice.......................
 
+// getInvoice:(userId)=>{
+
+//   return new Promise(async(resolve,reject)=>{
+//     let deliveredOrders = await db.get().collection(collections.ORDER_COLLECTION).find({_id:userId})
+//     ]).toArray()
+//     console.log(deliveredOrders,"this is eeeeee0");
+//     resolve(deliveredOrders)
+//   })
+
+// }
 
 
  
 
-};
+

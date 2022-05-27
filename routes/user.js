@@ -1,4 +1,7 @@
 var express = require("express");
+
+var easyinvoice = require('easyinvoice');
+const fs = require('fs')
 const adminHelper = require("../helpers/admin-helper");
 const productHelper = require("../helpers/product-helper");
 var router = express.Router();
@@ -7,6 +10,8 @@ var userHelper = require("../helpers/user-helpers");
 const createReferal = require('referral-code-generator')
 
 const paypal = require("paypal-rest-sdk");
+const userHelpers = require("../helpers/user-helpers");
+const { response } = require("../app");
 
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
@@ -927,6 +932,7 @@ router.get("/my-orders", verifyBlock,async function (req, res, next) {
     cartCount = null;
   }
   userHelper.getAllOrders(req.session.user._id).then((allOrders) => {
+    console.log("dfgassa",allOrders);
     res.render("my-orders", {
       title: "BE ARC",
       user: req.session.user,
@@ -936,13 +942,19 @@ router.get("/my-orders", verifyBlock,async function (req, res, next) {
   });
 });
 
-router.post("/cancel-product", verifyBlock, function (req, res, next) {
+router.post("/cancel-product", verifyBlock,function (req, res, next) {
+
   userHelper
     .cancelProduct(req.body.orderId, req.body.proId)
-    .then((allOrders) => {
+    .then(async(allOrders) => {
+      let order= await userHelpers.getorderdetails(req.body.orderId)
+      console.log(order[0].subTotal);
+      let total=order[0].subTotal
+      userHelpers.updateprofileWallet(req.session.user._id,total).then((resp)=>{
+      })
       res.json({ status: true });
     });
-});
+});    
 
 
 // Get wishlist products
@@ -1157,7 +1169,7 @@ router.get('/brand-view',async(req,res)=>{
       title: "BE ARC",
       user,
       cartCount,
-      allCategory,
+      allCategory,                              
       allBrands,
       subProducts,
     });
@@ -1206,6 +1218,23 @@ router.get('/brand-view',async(req,res)=>{
 })
 
 
+//................................invoice..............................
 
+router.get('/view-invoice/:id',verifyLogin,async(req,res)=>{
+  console.log(req.params.id);
+  console.log("jfkhvhgmjkhbn");
+  let productss=await userHelpers.getorderdetails(req.params.id)
+  cartCount = await userHelper.getCartCount(req.session.user._id);
+  let user = req.session?.user;
+  let products=productss[0]
+console.log("ne pod",products);     
+
+  res.render('invoice',{
+    products,
+    title: "GRAVITY",
+    user,
+    cartCount
+  })
+})
 
 module.exports = router;
