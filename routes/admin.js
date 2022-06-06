@@ -114,7 +114,7 @@ router.get("/login", function (req, res, next) {
       admin: true,
       noSidebar: true,
       loginErr: req.session.adminLoginErr,
-    });
+    })
   }
   req.session.adminLoginErr = false;
 });
